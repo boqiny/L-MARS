@@ -5,19 +5,20 @@ A modern legal research system using LangGraph with structured output.
 Features Query, Search, Judge, and Summary agents working together.
 """
 
-from .graph import create_legal_mind_graph, LegalMindGraph
+from .graph import create_legal_mind_graph, LMarsGraph
 from .agents import (
     QueryAgent, SearchAgent, JudgeAgent, SummaryAgent,
     FollowUpQuestion, QueryGeneration, SearchResult, 
-    JudgmentResult, FinalAnswer
+    JudgmentResult, FinalAnswer, Person, QueryResult,
+    FollowUpQuestionList, QueryGenerationList
 )
 
-__version__ = "2.0.0"
+__version__ = "1.0.0"
 
 __all__ = [
     # Main system
     "create_legal_mind_graph",
-    "LegalMindGraph", 
+    "LMarsGraph", 
     
     # Agents
     "QueryAgent",
@@ -30,5 +31,9 @@ __all__ = [
     "QueryGeneration",
     "SearchResult",
     "JudgmentResult", 
-    "FinalAnswer"
+    "FinalAnswer",
+    "Person",
+    "QueryResult",
+    "FollowUpQuestionList",
+    "QueryGenerationList"
 ]

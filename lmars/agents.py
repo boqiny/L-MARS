@@ -2,11 +2,10 @@
 Multi-agent system for legal question answering with structured output.
 Each agent has a specific role and uses Pydantic models for structured communication.
 """
-from typing import List, Optional, Literal
+from typing import List, Optional, Literal, Union
 from pydantic import BaseModel, Field
-from langchain_core.messages import BaseMessage, HumanMessage, AIMessage
-from langchain.chat_models import init_chat_model
-import os
+from langchain_core.messages import BaseMessage, HumanMessage
+import uuid
 
 # Structured output models
 class FollowUpQuestion(BaseModel):
@@ -16,13 +15,13 @@ class FollowUpQuestion(BaseModel):
 
 class QueryGeneration(BaseModel):
     """Generated search query for legal research."""
-    query: str = Field(description="Specific search query for legal databases")
-    query_type: Literal["case_law", "web_search", "contract"] = Field(description="Type of search to perform")
+    query: str = Field(description="Specific search query for legal databases or web search")
+    query_type: Literal["case_law", "web_search"] = Field(description="Type of search to perform")
     priority: Literal["high", "medium", "low"] = Field(description="Priority level for this query")
 
 class SearchResult(BaseModel):
-    """Structured search result from legal databases."""
-    source: str = Field(description="Source of the information (e.g., CourtListener, Serper)")
+    """Structured search result from legal databases or web search."""
+    source: str = Field(description="Source of the information (e.g., CourtListener, Serper web search)")
     title: str = Field(description="Title or case name")
     content: str = Field(description="Relevant content excerpt")
     url: Optional[str] = Field(description="URL to full source", default=None)
@@ -43,17 +42,46 @@ class FinalAnswer(BaseModel):
     confidence: float = Field(description="Overall confidence in the answer", ge=0, le=1)
     disclaimers: List[str] = Field(description="Important legal disclaimers", default=[])
 
+class Person(BaseModel):
+    """Information about a person involved in the legal matter."""
+    name: Optional[str] = Field(description="Person's name if provided", default=None)
+    role: str = Field(description="Role in the legal matter (e.g., plaintiff, defendant, witness, client)")
+    background: Optional[str] = Field(description="Relevant background information", default=None)
+    relationship: Optional[str] = Field(description="Relationship to the user/case", default=None)
+
+class QueryResult(BaseModel):
+    """Structured result from query analysis with detailed categorization."""
+    id: str = Field(description="Unique identifier for this query result", default_factory=lambda: str(uuid.uuid4()))
+    category: str = Field(description="Legal category/area (e.g., contract law, criminal law, family law)")
+    people: List[Person] = Field(description="People involved in the legal matter", default=[])
+    jurisdiction: Optional[str] = Field(description="Relevant jurisdiction if specified", default=None)
+    urgency: Literal["high", "medium", "low"] = Field(description="Urgency level of the legal matter")
+    legal_areas: List[str] = Field(description="Specific areas of law involved", default=[])
+    timeline: Optional[str] = Field(description="Relevant timeline or deadlines", default=None)
+    context: str = Field(description="Additional context about the legal situation")
+    confidence: float = Field(description="Confidence in the analysis", ge=0, le=1)
+
+# Wrapper classes for List types to fix structured output issues
+class FollowUpQuestionList(BaseModel):
+    """Wrapper for list of follow-up questions."""
+    questions: List[FollowUpQuestion] = Field(description="List of follow-up questions")
+
+class QueryGenerationList(BaseModel):
+    """Wrapper for list of query generations."""
+    queries: List[QueryGeneration] = Field(description="List of generated queries")
+
 # Agent implementations
 class QueryAgent:
     """Agent responsible for understanding user queries and generating follow-up questions."""
     
-    def __init__(self, llm):
+    def __init__(self, llm, structured_output: bool = False):
         self.llm = llm
+        self.structured_output = structured_output
     
     def generate_followup_questions(self, user_query: str, conversation_history: List[BaseMessage]) -> List[FollowUpQuestion]:
         """Generate follow-up questions to clarify the user's legal needs."""
         
-        structured_llm = self.llm.with_structured_output(List[FollowUpQuestion])
+        structured_llm = self.llm.with_structured_output(FollowUpQuestionList)
         
         prompt = f"""
         You are a legal assistant helping users with their legal questions. 
@@ -71,12 +99,12 @@ class QueryAgent:
         """
         
         response = structured_llm.invoke([HumanMessage(content=prompt)])
-        return response
+        return response.questions
     
     def generate_search_queries(self, user_query: str, context: str = "") -> List[QueryGeneration]:
         """Generate specific search queries based on the user's refined question."""
         
-        structured_llm = self.llm.with_structured_output(List[QueryGeneration])
+        structured_llm = self.llm.with_structured_output(QueryGenerationList)
         
         prompt = f"""
         Based on the user's legal question and any additional context, generate 2-4 specific search queries.
@@ -93,7 +121,61 @@ class QueryAgent:
         """
         
         response = structured_llm.invoke([HumanMessage(content=prompt)])
+        return response.queries
+    
+    def analyze_query(self, user_query: str, context: str = "") -> Union[str, QueryResult]:
+        """Analyze user query and return either plain text or structured result based on configuration."""
+        
+        if self.structured_output:
+            return self._generate_structured_query_result(user_query, context)
+        else:
+            return self._generate_plain_text_analysis(user_query, context)
+    
+    def _generate_structured_query_result(self, user_query: str, context: str = "") -> QueryResult:
+        """Generate structured query result with detailed categorization."""
+        
+        structured_llm = self.llm.with_structured_output(QueryResult)
+        
+        prompt = f"""
+        Analyze the user's legal query and provide a detailed structured breakdown.
+        
+        User Query: {user_query}
+        Additional Context: {context}
+        
+        Analyze and extract:
+        1. Legal category/area (e.g., contract law, criminal law, family law, employment law)
+        2. People involved with their roles (plaintiff, defendant, client, witness, etc.)
+        3. Jurisdiction if mentioned or inferable
+        4. Urgency level based on the nature of the query
+        5. Specific legal areas involved
+        6. Timeline or deadlines if mentioned
+        7. Additional context about the situation
+        8. Confidence in your analysis
+        
+        Be thorough but accurate in your categorization.
+        """
+        
+        response = structured_llm.invoke([HumanMessage(content=prompt)])
         return response
+    
+    def _generate_plain_text_analysis(self, user_query: str, context: str = "") -> str:
+        """Generate plain text analysis of the user query."""
+        
+        prompt = f"""
+        Analyze the user's legal query and provide a brief text summary of the key aspects.
+        
+        User Query: {user_query}
+        Additional Context: {context}
+        
+        Provide a concise analysis covering:
+        - Legal area/category
+        - Key parties involved
+        - Urgency level
+        - Important context
+        """
+        
+        response = self.llm.invoke([HumanMessage(content=prompt)])
+        return response.content
 
 class SearchAgent:
     """Agent responsible for executing searches using available tools."""

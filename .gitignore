@@ -4,3 +4,6 @@
 __pycache__/
 *.pyc
 *.pyo
+
+# Results directory
+/results/

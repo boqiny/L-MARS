@@ -17,6 +17,7 @@ from .agents import (
 )
 from .tools.serper_search_tool import search_serper_with_content
 from .tools.courtlistener_tool import find_legal_cases
+from .trajectory_tracker import TrajectoryTracker
 
 
 class LMarsState(TypedDict):
@@ -32,14 +33,18 @@ class LMarsState(TypedDict):
     current_step: str
     iteration_count: int
     max_iterations: int
+    run_id: str
 
 
 class LMarsGraph:
     """L-MARS: Multi-agent legal research workflow using LangGraph."""
     
-    def __init__(self, llm_model: str = "openai:gpt-4", max_iterations: int = 3):
+    def __init__(self, llm_model: str = "openai:gpt-4", max_iterations: int = 3, enable_tracking: bool = True):
         self.llm = init_chat_model(llm_model)
         self.max_iterations = max_iterations
+        
+        # Initialize trajectory tracker
+        self.tracker = TrajectoryTracker() if enable_tracking else None
         
         # Initialize agents
         self.query_agent = QueryAgent(self.llm)
@@ -107,6 +112,9 @@ class LMarsGraph:
     def _query_processing_node(self, state: LMarsState) -> Dict[str, Any]:
         """Initial processing of the user's query."""
         
+        if self.tracker:
+            step_id = self.tracker.start_step("query_processing", state)
+        
         # Extract the user's query from messages
         last_message = state["messages"][-1] if state["messages"] else None
         if last_message and hasattr(last_message, 'content'):
@@ -114,21 +122,36 @@ class LMarsGraph:
         else:
             query = "No query provided"
         
-        return {
+        result = {
             "original_query": query,
             "current_step": "query_processing",
             "iteration_count": 0,
             "max_iterations": self.max_iterations
         }
+        
+        if self.tracker:
+            self.tracker.end_step(result)
+        
+        return result
     
     def _follow_up_questions_node(self, state: LMarsState) -> Dict[str, Any]:
         """Generate follow-up questions to clarify the user's needs."""
+        
+        if self.tracker:
+            step_id = self.tracker.start_step("follow_up_questions", state)
         
         # Generate follow-up questions
         questions = self.query_agent.generate_followup_questions(
             state["original_query"], 
             state["messages"]
         )
+        
+        if self.tracker:
+            self.tracker.log_model_call(
+                "follow_up_questions", 
+                f"Query: {state['original_query']}", 
+                f"Generated {len(questions)} follow-up questions"
+            )
         
         # Add AI message with follow-up questions
         question_text = "I'd like to ask a few clarifying questions to better help you:\n\n"
@@ -137,11 +160,16 @@ class LMarsGraph:
         
         ai_message = AIMessage(content=question_text)
         
-        return {
+        result = {
             "follow_up_questions": questions,
             "messages": [ai_message],
             "current_step": "follow_up_questions"
         }
+        
+        if self.tracker:
+            self.tracker.end_step(result)
+        
+        return result
     
     def _should_ask_followup(self, state: LMarsState) -> str:
         """Decide if we should ask follow-up questions or continue."""
@@ -155,6 +183,9 @@ class LMarsGraph:
     def _generate_queries_node(self, state: LMarsState) -> Dict[str, Any]:
         """Generate specific search queries based on refined understanding."""
         
+        if self.tracker:
+            step_id = self.tracker.start_step("generate_queries", state)
+        
         # Build context from user responses
         context = ""
         if state.get("user_responses"):
@@ -166,13 +197,28 @@ class LMarsGraph:
             context
         )
         
-        return {
+        if self.tracker:
+            self.tracker.log_model_call(
+                "generate_queries", 
+                f"Original query: {state['original_query']}\nContext: {context}", 
+                f"Generated {len(queries)} search queries"
+            )
+        
+        result = {
             "search_queries": queries,
             "current_step": "generate_queries"
         }
+        
+        if self.tracker:
+            self.tracker.end_step(result)
+        
+        return result
     
     def _search_execution_node(self, state: LMarsState) -> Dict[str, Any]:
         """Execute searches using available tools."""
+        
+        if self.tracker:
+            step_id = self.tracker.start_step("search_execution", state)
         
         all_results = []
         
@@ -181,28 +227,61 @@ class LMarsGraph:
             try:
                 results = self.search_agent.execute_search(query)
                 all_results.extend(results)
+                
+                if self.tracker:
+                    self.tracker.log_model_call(
+                        "search_execution", 
+                        f"Search query: {query.query}", 
+                        f"Found {len(results)} results"
+                    )
             except Exception as e:
                 # Log error and continue with other searches
                 print(f"Search error for query '{query.query}': {e}")
+                if self.tracker:
+                    self.tracker.log_model_call(
+                        "search_execution_error", 
+                        f"Search query: {query.query}", 
+                        f"Error: {str(e)}"
+                    )
                 continue
         
-        return {
+        result = {
             "search_results": all_results,
             "current_step": "search_execution"
         }
+        
+        if self.tracker:
+            self.tracker.end_step(result)
+        
+        return result
     
     def _judge_evaluation_node(self, state: LMarsState) -> Dict[str, Any]:
         """Evaluate if search results are sufficient."""
+        
+        if self.tracker:
+            step_id = self.tracker.start_step("judge_evaluation", state)
         
         judgment = self.judge_agent.evaluate_results(
             state["original_query"],
             state.get("search_results", [])
         )
         
-        return {
+        if self.tracker:
+            self.tracker.log_model_call(
+                "judge_evaluation", 
+                f"Query: {state['original_query']}\nResults count: {len(state.get('search_results', []))}", 
+                f"Judgment: {'Sufficient' if judgment.is_sufficient else 'Insufficient'}"
+            )
+        
+        result = {
             "judgment": judgment,
             "current_step": "judge_evaluation"
         }
+        
+        if self.tracker:
+            self.tracker.end_step(result)
+        
+        return result
     
     def _should_continue_search(self, state: LMarsState) -> str:
         """Decide if we need more search or can generate final answer."""
@@ -221,10 +300,20 @@ class LMarsGraph:
     def _generate_summary_node(self, state: LMarsState) -> Dict[str, Any]:
         """Generate the final answer for the user."""
         
+        if self.tracker:
+            step_id = self.tracker.start_step("generate_summary", state)
+        
         final_answer = self.summary_agent.generate_final_answer(
             state["original_query"],
             state.get("search_results", [])
         )
+        
+        if self.tracker:
+            self.tracker.log_model_call(
+                "generate_summary", 
+                f"Query: {state['original_query']}\nResults: {len(state.get('search_results', []))}", 
+                f"Generated final answer with {len(final_answer.key_points)} key points"
+            )
         
         # Create summary message
         summary_text = f"## Legal Research Summary\n\n"
@@ -250,11 +339,16 @@ class LMarsGraph:
         
         ai_message = AIMessage(content=summary_text)
         
-        return {
+        result = {
             "final_answer": final_answer,
             "messages": [ai_message],
             "current_step": "complete"
         }
+        
+        if self.tracker:
+            self.tracker.end_step(result)
+        
+        return result
     
     def invoke(self, user_input: str, config: Dict[str, Any] = None) -> Dict[str, Any]:
         """Main entry point for the legal research system."""
@@ -262,14 +356,31 @@ class LMarsGraph:
         if config is None:
             config = {"configurable": {"thread_id": "legal_session"}}
         
+        # Start trajectory tracking
+        run_id = None
+        if self.tracker:
+            run_id = self.tracker.start_run(user_input, {"llm_model": str(self.llm), "max_iterations": self.max_iterations})
+            self.tracker.log_human_input("initial_query", user_input)
+        
         # Create initial state
         initial_state = {
-            "messages": [HumanMessage(content=user_input)]
+            "messages": [HumanMessage(content=user_input)],
+            "run_id": run_id
         }
         
         # Run the graph
-        result = self.graph.invoke(initial_state, config)
-        return result
+        try:
+            result = self.graph.invoke(initial_state, config)
+            
+            # End trajectory tracking
+            if self.tracker:
+                self.tracker.end_run(result)
+            
+            return result
+        except Exception as e:
+            if self.tracker:
+                self.tracker.end_run({"error": str(e)})
+            raise
     
     def stream(self, user_input: str, config: Dict[str, Any] = None):
         """Stream the legal research process."""
@@ -277,12 +388,30 @@ class LMarsGraph:
         if config is None:
             config = {"configurable": {"thread_id": "legal_session"}}
         
+        # Start trajectory tracking
+        run_id = None
+        if self.tracker:
+            run_id = self.tracker.start_run(user_input, {"llm_model": str(self.llm), "max_iterations": self.max_iterations})
+            self.tracker.log_human_input("initial_query", user_input)
+        
         initial_state = {
-            "messages": [HumanMessage(content=user_input)]
+            "messages": [HumanMessage(content=user_input)],
+            "run_id": run_id
         }
         
-        for event in self.graph.stream(initial_state, config, stream_mode="values"):
-            yield event
+        try:
+            final_result = None
+            for event in self.graph.stream(initial_state, config, stream_mode="values"):
+                final_result = event
+                yield event
+            
+            # End trajectory tracking
+            if self.tracker:
+                self.tracker.end_run(final_result)
+        except Exception as e:
+            if self.tracker:
+                self.tracker.end_run({"error": str(e)})
+            raise
     
     def continue_conversation(self, user_responses: Dict[str, str], config: Dict[str, Any] = None):
         """Continue the conversation after user provides follow-up answers."""
@@ -290,18 +419,22 @@ class LMarsGraph:
         if config is None:
             config = {"configurable": {"thread_id": "legal_session"}}
         
+        # Log human input
+        if self.tracker:
+            self.tracker.log_human_input("follow_up_responses", user_responses)
+        
         # Update state with user responses
         current_state = self.graph.get_state(config)
-        updated_state = {
-            **current_state.values,
-            "user_responses": user_responses,
-            "messages": current_state.values.get("messages", []) + 
-                       [HumanMessage(content=f"User responses: {user_responses}")]
-        }
         
-        # Continue from generate_queries
-        result = self.graph.invoke(updated_state, config)
-        return result
+        # Update the state to include user responses
+        self.graph.update_state(config, {
+            "user_responses": user_responses,
+            "messages": [HumanMessage(content=f"User responses: {user_responses}")]
+        })
+        
+        # Continue from generate_queries node
+        for event in self.graph.stream(None, config, stream_mode="values"):
+            yield event
 
 
 def create_legal_mind_graph(llm_model: str = "openai:gpt-4") -> LMarsGraph:
