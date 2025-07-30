@@ -214,7 +214,7 @@ class TestResultsViewer:
         
         # Add some steps
         step_id1 = self.tracker.start_step("query_processing", {"query": "test"})
-        self.tracker.log_model_call("gpt-4", "Process query", "Query processed")
+        self.tracker.log_model_call("gpt-4o", "Process query", "Query processed")
         self.tracker.end_step({"processed": True})
         
         step_id2 = self.tracker.start_step("search_execution", {"queries": ["test query"]})
@@ -280,7 +280,7 @@ class TestResultsViewer:
         
         assert interactions is not None, "Should return interactions"
         assert len(interactions) == 2, "Should have 2 model interactions"
-        assert interactions[0]['model_name'] == "gpt-4", "First interaction should be gpt-4"
+        assert interactions[0]['model_name'] == "gpt-4o", "First interaction should be gpt-4o"
         
         print("   ✅ Model interactions retrieved correctly")
     

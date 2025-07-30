@@ -39,8 +39,15 @@ class LMarsState(TypedDict):
 class LMarsGraph:
     """L-MARS: Multi-agent legal research workflow using LangGraph."""
     
-    def __init__(self, llm_model: str = "openai:gpt-4", max_iterations: int = 3, enable_tracking: bool = True):
+    def __init__(self, llm_model: str = "openai:gpt-4o", judge_model: str = "openai:gpt-4o", max_iterations: int = 3, enable_tracking: bool = True):
         self.llm = init_chat_model(llm_model)
+        
+        # Configure judge model with o3-mini specific settings
+        if "o3-mini" in judge_model:
+            self.judge_llm = init_chat_model(judge_model, model_kwargs={"parallel_tool_calls": False})
+        else:
+            self.judge_llm = init_chat_model(judge_model)
+            
         self.max_iterations = max_iterations
         
         # Initialize trajectory tracker
@@ -48,7 +55,7 @@ class LMarsGraph:
         
         # Initialize agents
         self.query_agent = QueryAgent(self.llm)
-        self.judge_agent = JudgeAgent(self.llm)
+        self.judge_agent = JudgeAgent(self.judge_llm)  # Use specialized model for judge
         self.summary_agent = SummaryAgent(self.llm)
         
         # Initialize tools for search agent
@@ -263,14 +270,16 @@ class LMarsGraph:
         
         judgment = self.judge_agent.evaluate_results(
             state["original_query"],
-            state.get("search_results", [])
+            state.get("search_results", []),
+            conversation_history=state.get("messages", []),
+            iteration_count=state.get("iteration_count", 0)
         )
         
         if self.tracker:
             self.tracker.log_model_call(
-                "judge_evaluation", 
-                f"Query: {state['original_query']}\nResults count: {len(state.get('search_results', []))}", 
-                f"Judgment: {'Sufficient' if judgment.is_sufficient else 'Insufficient'}"
+                f"judge_evaluation_{self.judge_llm}", 
+                f"Query: {state['original_query']}\nResults count: {len(state.get('search_results', []))}\nIteration: {state.get('iteration_count', 0)}", 
+                f"Judgment: {'Sufficient' if judgment.is_sufficient else 'Insufficient'} - Missing: {', '.join(judgment.missing_information)}"
             )
         
         result = {
@@ -293,6 +302,8 @@ class LMarsGraph:
         # If judgment says insufficient and we haven't hit max iterations
         if (judgment and not judgment.is_sufficient and 
             iteration_count < max_iterations):
+            # Increment iteration count for next cycle
+            state["iteration_count"] = iteration_count + 1
             return "search_more"
         
         return "summarize"
@@ -437,9 +448,9 @@ class LMarsGraph:
             yield event
 
 
-def create_legal_mind_graph(llm_model: str = "openai:gpt-4") -> LMarsGraph:
+def create_legal_mind_graph(llm_model: str = "openai:gpt-4o", judge_model: str = "openai:gpt-4o", max_iterations: int = 3, enable_tracking: bool = True) -> LMarsGraph:
     """Factory function to create an L-MARS graph instance."""
-    return LMarsGraph(llm_model=llm_model)
+    return LMarsGraph(llm_model=llm_model, judge_model=judge_model, max_iterations=max_iterations, enable_tracking=enable_tracking)
 
 
 # Example usage

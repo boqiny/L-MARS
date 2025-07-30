@@ -1,0 +1,16 @@
+# Streamlit application requirements
+streamlit>=1.28.0
+plotly>=5.15.0
+pandas>=2.0.0
+python-dotenv>=1.0.0
+
+# Core L-MARS dependencies (inherited from main project)
+langchain>=0.1.0
+langchain-openai>=0.1.0
+langgraph>=0.0.40
+pydantic>=2.0.0
+
+# Additional UI enhancements
+streamlit-option-menu>=0.3.6
+streamlit-aggrid>=0.3.4
+streamlit-components-template>=0.0.1

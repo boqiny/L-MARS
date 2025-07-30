@@ -17,7 +17,7 @@ def run_legal_research_with_tracking():
     """Example of running legal research with trajectory tracking enabled."""
     
     # Create L-MARS instance with trajectory tracking enabled (default)
-    lmars = create_legal_mind_graph(llm_model="openai:gpt-4")
+    lmars = create_legal_mind_graph(llm_model="openai:gpt-4o")
     
     # Example legal query
     user_query = "Can an F1 student work remotely for a US company while studying?"
@@ -104,7 +104,7 @@ def run_without_tracking():
     print("\\n=== L-MARS without Trajectory Tracking ===")
     
     # Create L-MARS instance with tracking disabled
-    lmars = create_legal_mind_graph(llm_model="openai:gpt-4")
+    lmars = create_legal_mind_graph(llm_model="openai:gpt-4o")
     lmars.tracker = None  # Disable tracking
     
     user_query = "What are the employment restrictions for H1B visa holders?"

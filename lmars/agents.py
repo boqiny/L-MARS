@@ -242,36 +242,104 @@ class JudgeAgent:
     
     def __init__(self, llm):
         self.llm = llm
+        self.previous_evaluations = []
     
-    def evaluate_results(self, user_query: str, search_results: List[SearchResult]) -> JudgmentResult:
+    def evaluate_results(self, user_query: str, search_results: List[SearchResult], 
+                        conversation_history: List[BaseMessage] = None, 
+                        iteration_count: int = 0) -> JudgmentResult:
         """Evaluate if the search results sufficiently answer the user's question."""
         
-        structured_llm = self.llm.with_structured_output(JudgmentResult)
+        # Handle o3-mini model constraints
+        try:
+            structured_llm = self.llm.with_structured_output(JudgmentResult)
+        except Exception as e:
+            # Fallback for models that don't support structured output properly
+            structured_llm = self.llm
         
         results_summary = "\n".join([
-            f"Source: {r.source}\nTitle: {r.title}\nContent: {r.content[:200]}...\n"
+            f"Source: {r.source}\nTitle: {r.title}\nContent: {r.content}\n"
             for r in search_results
         ])
         
+        # Build conversation context
+        conversation_context = ""
+        if conversation_history:
+            conversation_context = "\n".join([
+                f"{'Human' if isinstance(msg, HumanMessage) else 'Assistant'}: {msg.content}"
+                for msg in conversation_history[-10:]  # Last 10 messages for context
+            ])
+        
+        # Build previous evaluation context
+        prev_evaluations = ""
+        if self.previous_evaluations:
+            prev_evaluations = "\nPrevious Evaluations:\n" + "\n".join([
+                f"Iteration {i}: {'Sufficient' if eval_result.is_sufficient else 'Insufficient'} - Missing: {', '.join(eval_result.missing_information)}"
+                for i, eval_result in enumerate(self.previous_evaluations[-3:], 1)  # Last 3 evaluations
+            ])
+        
         prompt = f"""
-        Evaluate whether the search results sufficiently answer the user's legal question.
+        You are a legal research judge evaluating search results. This is iteration {iteration_count + 1}.
         
-        User's Question: {user_query}
+        Original Question: {user_query}
         
-        Search Results:
+        Conversation History:
+        {conversation_context}
+        
+        Current Search Results ({len(search_results)} results):
         {results_summary}
+        {prev_evaluations}
         
-        Analyze:
-        1. Do the results directly address the question?
-        2. Is the information comprehensive enough?
-        3. What key information might be missing?
-        4. Should we refine the search with different queries?
+        CRITICAL EVALUATION CRITERIA:
+        1. Do the results DIRECTLY answer the specific legal question asked?
+        2. Is there sufficient detail for practical legal guidance?
+        3. Are there multiple sources confirming the information?
+        4. What specific legal procedures, requirements, or consequences are missing?
         
-        Be thorough but practical in your evaluation.
+        IMPORTANT: 
+        - If this is iteration {iteration_count + 1} or higher, be MORE LENIENT and consider the cumulative information
+        - Only mark as insufficient if there are SPECIFIC, CRITICAL gaps that prevent giving practical advice
+        - Consider the user's actual situation described in the conversation history
+        
+        Be precise about what specific information is still needed.
         """
         
-        response = structured_llm.invoke([HumanMessage(content=prompt)])
-        return response
+        try:
+            response = structured_llm.invoke([HumanMessage(content=prompt)])
+            
+            # If we got a structured response, use it directly
+            if isinstance(response, JudgmentResult):
+                result = response
+            else:
+                # Parse unstructured response
+                content = response.content if hasattr(response, 'content') else str(response)
+                result = self._parse_judgment_response(content)
+            
+        except Exception as e:
+            print(f"Warning: Judge evaluation failed: {e}")
+            # Return a default response
+            result = JudgmentResult(
+                is_sufficient=iteration_count >= 2,  # Be lenient after 2 iterations
+                missing_information=["Could not evaluate due to model error"],
+                suggested_refinements=[],
+                confidence=0.5
+            )
+        
+        # Store this evaluation for future reference
+        self.previous_evaluations.append(result)
+        
+        return result
+    
+    def _parse_judgment_response(self, content: str) -> JudgmentResult:
+        """Parse unstructured response into JudgmentResult."""
+        # Simple parsing logic - could be improved
+        is_sufficient = "sufficient" in content.lower() and "insufficient" not in content.lower()
+        
+        return JudgmentResult(
+            is_sufficient=is_sufficient,
+            missing_information=[] if is_sufficient else ["Additional information needed"],
+            suggested_refinements=[] if is_sufficient else ["Refine search queries"],
+            confidence=0.7
+        )
 
 class SummaryAgent:
     """Agent responsible for creating the final answer from search results."""

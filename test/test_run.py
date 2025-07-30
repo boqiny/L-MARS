@@ -41,7 +41,8 @@ class CLITestRunner:
             "view <run_id>": "View details of a specific run",
             "export <run_id>": "Export run to detailed JSON",
             "config": "Show current configuration",
-            "model <model_name>": "Change the LLM model (e.g., 'model openai:gpt-4')",
+            "model <model_name>": "Change the LLM model (e.g., 'model openai:gpt-4o')",
+            "judge <model_name>": "Change the judge model (e.g., 'judge openai:o3-mini')",
             "clear": "Clear the screen",
             "help": "Show this help message",
             "quit": "Exit the application"
@@ -53,11 +54,12 @@ class CLITestRunner:
             print(f"  {cmd:<20} - {desc}")
         print()
     
-    def initialize_system(self, model: str = "openai:gpt-4"):
+    def initialize_system(self, model: str = "openai:gpt-4o"):
         """Initialize the L-MARS system."""
         try:
             print(f"🔧 Initializing L-MARS with model: {model}")
-            self.lmars = create_legal_mind_graph(llm_model=model)
+            # Use gpt-4o for both main and judge for compatibility
+            self.lmars = create_legal_mind_graph(llm_model=model, judge_model=model)
             print("✅ System initialized successfully!")
             return True
         except Exception as e:
@@ -102,7 +104,7 @@ class CLITestRunner:
                             return
                         else:
                             print(f"📄 Output:")
-                            print(content)
+                            print(content)  # Show full content, no truncation
                 
                 # Show search results count
                 if "search_results" in event:
@@ -170,7 +172,7 @@ class CLITestRunner:
                     last_message = event["messages"][-1]
                     if hasattr(last_message, 'content'):
                         print(f"📄 Output:")
-                        print(last_message.content)
+                        print(last_message.content)  # Show full content, no truncation
                 
                 if "search_results" in event:
                     results_count = len(event["search_results"])
@@ -296,6 +298,22 @@ class CLITestRunner:
         else:
             print("❌ Failed to change model")
     
+    def change_judge_model(self, judge_model: str):
+        """Change the judge model specifically."""
+        print(f"🔄 Changing judge model to: {judge_model}")
+        try:
+            # Get current main model
+            current_model = "openai:gpt-4o"  # Default fallback
+            if self.lmars:
+                current_model = str(self.lmars.llm)
+            
+            # Reinitialize with new judge model
+            self.lmars = create_legal_mind_graph(llm_model=current_model, judge_model=judge_model)
+            print("✅ Judge model changed successfully!")
+        except Exception as e:
+            print(f"❌ Failed to change judge model: {e}")
+            print("💡 Note: o3-mini may have compatibility issues, try using gpt-4o instead")
+    
     def run(self):
         """Main CLI loop."""
         self.print_header()
@@ -363,6 +381,12 @@ class CLITestRunner:
                     else:
                         self.change_model(args)
                 
+                elif command == "judge":
+                    if not args:
+                        print("❌ Please provide a judge model name. Usage: judge <model_name>")
+                    else:
+                        self.change_judge_model(args)
+                
                 else:
                     print(f"❌ Unknown command: {command}")
                     print("💡 Type 'help' for available commands")
@@ -381,7 +405,8 @@ def main():
     """Entry point for the CLI test runner."""
     # Check if we have required environment variables or API keys
     print("🔍 Checking system requirements...")
-    
+    from dotenv import load_dotenv
+    load_dotenv()
     # Basic environment check
     if not os.getenv("OPENAI_API_KEY") and not os.getenv("ANTHROPIC_API_KEY"):
         print("⚠️  Warning: No API keys found in environment variables")

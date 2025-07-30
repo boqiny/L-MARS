@@ -70,7 +70,7 @@ export COURTLISTENER_API_TOKEN="your_courtlistener_token"  # optional
 from lmars import create_legal_mind_graph
 
 # Create the system
-lmars = create_legal_mind_graph("openai:gpt-4")
+lmars = create_legal_mind_graph("openai:gpt-4o")
 
 # Ask a legal question
 result = lmars.invoke("Can F1 students work remotely for US companies?")
@@ -122,7 +122,7 @@ The system supports different LLM providers:
 
 ```python
 # OpenAI (default)
-lmars = create_legal_mind_graph("openai:gpt-4")
+lmars = create_legal_mind_graph("openai:gpt-4o")
 
 # Anthropic
 lmars = create_legal_mind_graph("anthropic:claude-3-5-sonnet-latest")

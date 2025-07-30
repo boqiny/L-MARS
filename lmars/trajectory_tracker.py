@@ -117,6 +117,9 @@ class TrajectoryTracker:
         
         self.current_run.steps.append(step)
         delattr(self, '_current_step_info')
+        
+        # Save incrementally after each step
+        self._save_trajectory_incremental()
     
     def log_human_input(self, input_type: str, input_data: Any):
         """Log human input during the workflow."""
@@ -138,8 +141,14 @@ class TrajectoryTracker:
         self.current_run.end_time = datetime.datetime.now().isoformat()
         self.current_run.final_result = self._serialize_data(final_result) if final_result else None
         
-        # Save to file
+        # Save final trajectory
         self._save_trajectory()
+        
+        # Clean up partial file
+        partial_filename = f"trajectory_{self.current_run.run_id}_partial.json"
+        partial_filepath = self.results_dir / partial_filename
+        if partial_filepath.exists():
+            partial_filepath.unlink()
         
         # Reset current run
         run_id = self.current_run.run_id
@@ -187,6 +196,31 @@ class TrajectoryTracker:
         filepath = self.results_dir / filename
         
         trajectory_dict = asdict(self.current_run)
+        
+        with open(filepath, 'w', encoding='utf-8') as f:
+            json.dump(trajectory_dict, f, indent=2, ensure_ascii=False)
+    
+    def _save_trajectory_incremental(self):
+        """Save trajectory incrementally during execution."""
+        if not self.current_run:
+            return
+        
+        filename = f"trajectory_{self.current_run.run_id}_partial.json"
+        filepath = self.results_dir / filename
+        
+        # Create a copy with current status
+        partial_run = TrajectoryRun(
+            run_id=self.current_run.run_id,
+            start_time=self.current_run.start_time,
+            end_time=None,  # Still running
+            original_query=self.current_run.original_query,
+            human_inputs=self.current_run.human_inputs.copy(),
+            steps=self.current_run.steps.copy(),
+            final_result=None,  # Not complete yet
+            metadata={**self.current_run.metadata, "status": "in_progress", "last_updated": datetime.datetime.now().isoformat()}
+        )
+        
+        trajectory_dict = asdict(partial_run)
         
         with open(filepath, 'w', encoding='utf-8') as f:
             json.dump(trajectory_dict, f, indent=2, ensure_ascii=False)
