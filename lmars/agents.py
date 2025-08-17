@@ -6,6 +6,7 @@ from typing import List, Optional, Literal, Union
 from pydantic import BaseModel, Field
 from langchain_core.messages import BaseMessage, HumanMessage
 import uuid
+from .result_logger import get_logger
 
 # Structured output models
 class FollowUpQuestion(BaseModel):
@@ -16,7 +17,7 @@ class FollowUpQuestion(BaseModel):
 class QueryGeneration(BaseModel):
     """Generated search query for legal research."""
     query: str = Field(description="Specific search query for legal databases or web search")
-    query_type: Literal["case_law", "web_search"] = Field(description="Type of search to perform")
+    query_type: Literal["case_law", "web_search", "offline_rag"] = Field(description="Type of search to perform")
     priority: Literal["high", "medium", "low"] = Field(description="Priority level for this query")
 
 class SearchResult(BaseModel):
@@ -115,7 +116,7 @@ class QueryAgent:
         Generate queries for different sources:
         - case_law: For searching legal cases and precedents
         - web_search: For general legal information and recent updates
-        - contract: For contract-related queries
+        - offline_rag: For searching local legal documents in the inputs folder
         
         Make queries specific and focused to get the most relevant results.
         """
@@ -184,7 +185,7 @@ class SearchAgent:
         self.tools = {
             'serper_search': tools.get('serper'),
             'courtlistener': tools.get('courtlistener'),
-            'contract_generation': tools.get('contract')
+            'offline_rag': tools.get('offline_rag')
         }
     
     def execute_search(self, query: QueryGeneration) -> List[SearchResult]:
@@ -202,10 +203,10 @@ class SearchAgent:
             raw_results = self.tools['courtlistener'](query.query)
             results.extend(self._parse_courtlistener_results(raw_results, query.query))
             
-        elif query.query_type == "contract" and self.tools['contract_generation']:
-            # Use contract tool for contract-related queries
-            raw_results = self.tools['contract_generation'](query.query)
-            results.extend(self._parse_contract_results(raw_results, query.query))
+        elif query.query_type == "offline_rag" and self.tools['offline_rag']:
+            # Use offline RAG for local documents
+            raw_results = self.tools['offline_rag'](query.query)
+            results.extend(self._parse_offline_rag_results(raw_results, query.query))
         
         return results
     
@@ -228,13 +229,13 @@ class SearchAgent:
             confidence=0.8
         )]
     
-    def _parse_contract_results(self, raw_results: str, query: str) -> List[SearchResult]:
-        """Parse contract tool results into structured format."""
+    def _parse_offline_rag_results(self, raw_results: str, query: str) -> List[SearchResult]:
+        """Parse offline RAG results into structured format."""
         return [SearchResult(
-            source="Contract Generation Tool",
-            title=f"Contract information for: {query}",
-            content=raw_results[:500] + "..." if len(raw_results) > 500 else raw_results,
-            confidence=0.6
+            source="Offline RAG (Local Documents)",
+            title=f"Local legal documents for: {query}",
+            content=raw_results[:1000] + "..." if len(raw_results) > 1000 else raw_results,
+            confidence=0.85
         )]
 
 class JudgeAgent:
@@ -349,6 +350,7 @@ class SummaryAgent:
     
     def generate_final_answer(self, user_query: str, search_results: List[SearchResult]) -> FinalAnswer:
         """Generate a comprehensive final answer based on search results."""
+        logger = get_logger()
         
         structured_llm = self.llm.with_structured_output(FinalAnswer)
         
@@ -376,7 +378,27 @@ class SummaryAgent:
         Remember: This is informational only and not legal advice.
         """
         
+        # Log LLM interaction
+        if logger:
+            logger.log_llm_interaction(
+                agent_name="summary_agent",
+                input_prompt=prompt,
+                output_response="[Generating final answer...]",
+                model=str(self.llm),
+                metadata={"search_results_count": len(search_results)}
+            )
+        
         response = structured_llm.invoke([HumanMessage(content=prompt)])
+        
+        # Log the actual response
+        if logger:
+            logger.log_llm_interaction(
+                agent_name="summary_agent_response",
+                input_prompt=prompt,
+                output_response=str(response),
+                model=str(self.llm),
+                metadata={"final_answer": True}
+            )
         
         # Ensure sources are included
         if not response.sources:
