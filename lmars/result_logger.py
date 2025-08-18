@@ -100,7 +100,6 @@ class ResultLogger:
                 "url": result.get("url", ""),
                 "file_path": result.get("file_path", ""),
                 "relevance_score": result.get("relevance_score", 0),
-                "confidence": result.get("confidence", 0),
                 "chunk_id": result.get("chunk_id", ""),
                 "metadata": result.get("metadata", {})
             }
@@ -154,7 +153,6 @@ class ResultLogger:
             "answer": answer.get("answer", ""),  # Full answer
             "key_points": answer.get("key_points", []),
             "sources": answer.get("sources", []),
-            "confidence": answer.get("confidence", 0),
             "disclaimers": answer.get("disclaimers", [])
         }
         self._add_process_log("final_answer_generated", {

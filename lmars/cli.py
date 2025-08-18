@@ -15,6 +15,7 @@ load_dotenv()
 
 from .workflow import create_workflow
 from .result_logger import create_logger, close_logger
+from .evaluation import evaluate_from_log
 
 
 def validate_api_keys():
@@ -70,8 +71,6 @@ def simple_mode_cli(query: str, model: str = "openai:gpt-4o", verbose: bool = Fa
                 print(f"\n📄 Result {i}:")
                 print(f"   Source: {search_result.source}")
                 print(f"   Title: {search_result.title}")
-                if hasattr(search_result, 'confidence'):
-                    print(f"   Confidence: {search_result.confidence:.2f}")
                 print(f"   Content: {search_result.content[:200]}..." if len(search_result.content) > 200 else f"   Content: {search_result.content}")
         
         # Display final answer
@@ -101,8 +100,23 @@ def simple_mode_cli(query: str, model: str = "openai:gpt-4o", verbose: bool = Fa
                     print(f"  • {disclaimer}")
                 print()
             
-            if verbose:
-                print(f"📊 Confidence: {final_answer.confidence:.1%}")
+            # Show evaluation if available (would be in result dict)
+            if isinstance(result, dict) and 'evaluation_metrics' in result:
+                eval_metrics = result['evaluation_metrics']
+                print(f"\n📈 Quantitative Evaluation:")
+                print(f"  U-Score: {eval_metrics.u_score:.3f}")
+                interpretation = "Good" if eval_metrics.u_score < 0.4 else "Moderate" if eval_metrics.u_score < 0.7 else "High uncertainty"
+                print(f"  Interpretation: {interpretation}")
+                
+                # Show qualitative evaluation if available
+                if 'combined_evaluation' in result and result['combined_evaluation'].get('qualitative'):
+                    qual = result['combined_evaluation']['qualitative']
+                    print(f"\n🎯 Qualitative Evaluation (LLM Judge):")
+                    print(f"  Factual Accuracy: {qual.factual_accuracy.level}")
+                    print(f"  Evidence Grounding: {qual.evidence_grounding.level}")
+                    print(f"  Clarity & Reasoning: {qual.clarity_reasoning.level}")
+                    print(f"  Uncertainty Awareness: {qual.uncertainty_awareness.level}")
+                    print(f"  Overall Usefulness: {qual.overall_usefulness.level}")
         
         print("="*60)
         
@@ -200,7 +214,6 @@ def multi_turn_mode_cli(query: str, model: str = "openai:gpt-4o", judge_model: s
                     print(f"  • {disclaimer}")
                 print()
             
-            print(f"📊 Confidence: {final_answer.confidence:.1%}")
             print(f"🔄 Iterations: {result.get('iterations', 1)}")
         
         print("="*60)

@@ -16,6 +16,8 @@ from .tools.courtlistener_tool import find_legal_cases
 from .tools.offline_rag_tool import search_offline_rag
 from .trajectory_tracker import TrajectoryTracker
 from .result_logger import get_logger
+from .evaluation import LegalAnswerEvaluator
+from .llm_judge import CombinedEvaluator
 
 
 class WorkflowConfig(BaseModel):
@@ -80,20 +82,59 @@ class SimpleWorkflow:
             # Generate final answer
             final_answer = self.summary_agent.generate_final_answer(query, search_results)
             
-            # Log final answer
+            # Combined evaluation (quantitative + qualitative)
+            combined_evaluator = CombinedEvaluator()
+            combined_evaluation = combined_evaluator.evaluate(
+                answer_text=final_answer.answer,
+                sources=final_answer.sources,
+                jurisdiction=None,  # Could extract from query
+                question=query,
+                search_results=[{
+                    'source': r.source,
+                    'content': r.content
+                } for r in search_results] if search_results else None
+            )
+            
+            # Extract quantitative metrics for backward compatibility
+            evaluation_metrics = combined_evaluation['quantitative']
+            
+            # Log final answer with both evaluations
             if logger and final_answer:
-                logger.log_final_answer({
+                eval_data = {
                     "answer": final_answer.answer,
                     "key_points": final_answer.key_points,
                     "sources": final_answer.sources,
-                    "confidence": final_answer.confidence,
-                    "disclaimers": final_answer.disclaimers
-                })
+                    "disclaimers": final_answer.disclaimers,
+                    "evaluation": {
+                        "u_score": evaluation_metrics.u_score,
+                        "hedging_score": evaluation_metrics.hedging_score,
+                        "temporal_vagueness": evaluation_metrics.temporal_vagueness,
+                        "citation_score": evaluation_metrics.citation_score,
+                        "jurisdiction_score": evaluation_metrics.jurisdiction_score,
+                        "decisiveness_score": evaluation_metrics.decisiveness_score
+                    }
+                }
+                
+                # Add qualitative evaluation if available
+                if combined_evaluation.get('qualitative'):
+                    qual = combined_evaluation['qualitative']
+                    eval_data['qualitative_evaluation'] = {
+                        'factual_accuracy': qual.factual_accuracy.level,
+                        'evidence_grounding': qual.evidence_grounding.level,
+                        'clarity_reasoning': qual.clarity_reasoning.level,
+                        'uncertainty_awareness': qual.uncertainty_awareness.level,
+                        'overall_usefulness': qual.overall_usefulness.level,
+                        'summary': qual.summary
+                    }
+                
+                logger.log_final_answer(eval_data)
             
             result = {
                 "query": query,
                 "search_results": search_results,
                 "final_answer": final_answer,
+                "evaluation_metrics": evaluation_metrics,
+                "combined_evaluation": combined_evaluation,
                 "mode": "simple"
             }
             
@@ -176,8 +217,7 @@ class SimpleWorkflow:
                                     "source": r.source if hasattr(r, 'source') else "",
                                     "title": r.title if hasattr(r, 'title') else "",
                                     "content": r.content if hasattr(r, 'content') else "",
-                                    "url": r.url if hasattr(r, 'url') else "",
-                                    "confidence": r.confidence if hasattr(r, 'confidence') else 0
+                                    "url": r.url if hasattr(r, 'url') else ""
                                 }
                             results_data.append(result_dict)
                         
@@ -238,11 +278,25 @@ class MultiTurnWorkflow:
     def run(self, query: str, user_responses: Dict[str, str] = None) -> Dict[str, Any]:
         """Execute multi-turn workflow with refinement loop."""
         run_id = None
+        logger = get_logger()
+        
         if self.tracker:
             run_id = self.tracker.start_run(query, {
                 "mode": "multi_turn",
                 "llm_model": str(self.llm),
                 "max_iterations": self.config.max_iterations
+            })
+        
+        # Log query and configuration
+        if logger:
+            logger.set_query(query)
+            logger.set_configuration({
+                "mode": "multi_turn",
+                "llm_model": str(self.llm),
+                "judge_model": str(self.judge_llm),
+                "max_iterations": self.config.max_iterations,
+                "enable_offline_rag": self.config.enable_offline_rag,
+                "enable_courtlistener": self.config.enable_courtlistener
             })
         
         try:
@@ -282,16 +336,25 @@ class MultiTurnWorkflow:
             
             while iteration < self.config.max_iterations:
                 # Execute searches
+                print(f"\n🔄 Search Iteration {iteration + 1}")
+                print(f"📍 Executing {len(search_queries)} search queries...")
+                
                 iteration_results = []
                 for query_obj in search_queries:
+                    print(f"  • Searching {query_obj.query_type}: \"{query_obj.query[:60]}...\"" if len(query_obj.query) > 60 else f"  • Searching {query_obj.query_type}: \"{query_obj.query}\"")
                     try:
                         results = self.search_agent.execute_search(query_obj)
-                        iteration_results.extend(results)
+                        if results:
+                            iteration_results.extend(results)
+                            print(f"    ✓ Found {len(results)} result(s)")
+                        else:
+                            print(f"    - No results")
                     except Exception as e:
-                        print(f"Search error: {e}")
+                        print(f"    ✗ Error: {str(e)[:100]}")
                         continue
                 
                 all_search_results.extend(iteration_results)
+                print(f"📊 Total results so far: {len(all_search_results)}")
                 
                 # Judge evaluation
                 judgment = self.judge_agent.evaluate_results(
@@ -300,9 +363,69 @@ class MultiTurnWorkflow:
                     iteration_count=iteration
                 )
                 
+                # Log judge evaluation
+                if logger:
+                    logger.log_llm_interaction(
+                        agent_name=f"judge_agent_iteration_{iteration + 1}",
+                        input_prompt=f"Evaluating {len(all_search_results)} search results",
+                        output_response={
+                            "is_sufficient": judgment.is_sufficient,
+                            "reasoning": judgment.reasoning,
+                            "source_quality": judgment.source_quality,
+                            "date_check": judgment.date_check,
+                            "jurisdiction_check": judgment.jurisdiction_check,
+                            "contradiction_check": judgment.contradiction_check,
+                            "missing_information": judgment.missing_information,
+                            "suggested_refinements": judgment.suggested_refinements
+                        },
+                        model=str(self.judge_llm),
+                        metadata={"iteration": iteration + 1}
+                    )
+                
+                # Print judge evaluation (verbose output)
+                print(f"\n🔍 JUDGE EVALUATION (Iteration {iteration + 1}):")
+                print("-" * 60)
+                print(f"✅ Sufficient: {judgment.is_sufficient}")
+                
+                if judgment.reasoning:
+                    print(f"\n📝 Chain-of-Thought Reasoning:")
+                    print(f"   {judgment.reasoning[:300]}..." if len(judgment.reasoning) > 300 else f"   {judgment.reasoning}")
+                
+                if judgment.source_quality:
+                    print(f"\n📊 Source Quality Analysis:")
+                    print(f"   {judgment.source_quality}")
+                
+                if judgment.date_check:
+                    print(f"\n📅 Date Relevance Check:")
+                    print(f"   {judgment.date_check}")
+                
+                if judgment.jurisdiction_check:
+                    print(f"\n⚖️ Jurisdiction Check:")
+                    print(f"   {judgment.jurisdiction_check}")
+                
+                if judgment.contradiction_check:
+                    print(f"\n⚠️ Contradiction Analysis:")
+                    print(f"   {judgment.contradiction_check}")
+                
+                if judgment.missing_information:
+                    print(f"\n❓ Missing Information:")
+                    for info in judgment.missing_information[:3]:  # Show max 3
+                        print(f"   • {info}")
+                
+                if judgment.suggested_refinements:
+                    print(f"\n💡 Suggested Refinements:")
+                    for refinement in judgment.suggested_refinements[:3]:  # Show max 3
+                        print(f"   • {refinement}")
+                
+                print("-" * 60)
+                
                 # If sufficient, break
                 if judgment.is_sufficient:
+                    print("✅ Judge determined results are SUFFICIENT. Proceeding to final answer.")
                     break
+                else:
+                    print(f"🔄 Judge determined results are INSUFFICIENT. Continuing search...")
+                    print()
                 
                 # Generate new queries based on missing information
                 if judgment.missing_information:
@@ -322,11 +445,60 @@ class MultiTurnWorkflow:
             # Step 4: Generate final answer
             final_answer = self.summary_agent.generate_final_answer(query, all_search_results)
             
+            # Combined evaluation (quantitative + qualitative)
+            combined_evaluator = CombinedEvaluator()
+            combined_evaluation = combined_evaluator.evaluate(
+                answer_text=final_answer.answer,
+                sources=final_answer.sources,
+                jurisdiction=None,  # Could extract from user_responses
+                question=query,
+                search_results=[{
+                    'source': r.source,
+                    'content': r.content
+                } for r in all_search_results] if all_search_results else None
+            )
+            
+            # Extract quantitative metrics for backward compatibility
+            evaluation_metrics = combined_evaluation['quantitative']
+            
+            # Log final answer with both evaluations
+            if logger and final_answer:
+                eval_data = {
+                    "answer": final_answer.answer,
+                    "key_points": final_answer.key_points,
+                    "sources": final_answer.sources,
+                    "disclaimers": final_answer.disclaimers,
+                    "evaluation": {
+                        "u_score": evaluation_metrics.u_score,
+                        "hedging_score": evaluation_metrics.hedging_score,
+                        "temporal_vagueness": evaluation_metrics.temporal_vagueness,
+                        "citation_score": evaluation_metrics.citation_score,
+                        "jurisdiction_score": evaluation_metrics.jurisdiction_score,
+                        "decisiveness_score": evaluation_metrics.decisiveness_score
+                    }
+                }
+                
+                # Add qualitative evaluation if available
+                if combined_evaluation.get('qualitative'):
+                    qual = combined_evaluation['qualitative']
+                    eval_data['qualitative_evaluation'] = {
+                        'factual_accuracy': qual.factual_accuracy.level,
+                        'evidence_grounding': qual.evidence_grounding.level,
+                        'clarity_reasoning': qual.clarity_reasoning.level,
+                        'uncertainty_awareness': qual.uncertainty_awareness.level,
+                        'overall_usefulness': qual.overall_usefulness.level,
+                        'summary': qual.summary
+                    }
+                
+                logger.log_final_answer(eval_data)
+            
             result = {
                 "query": query,
                 "user_responses": user_responses,
                 "search_results": all_search_results,
                 "final_answer": final_answer,
+                "evaluation_metrics": evaluation_metrics,
+                "combined_evaluation": combined_evaluation,
                 "iterations": iteration + 1,
                 "mode": "multi_turn"
             }

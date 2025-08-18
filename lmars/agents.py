@@ -26,21 +26,23 @@ class SearchResult(BaseModel):
     title: str = Field(description="Title or case name")
     content: str = Field(description="Relevant content excerpt")
     url: Optional[str] = Field(description="URL to full source", default=None)
-    confidence: float = Field(description="Confidence score 0-1", ge=0, le=1)
 
 class JudgmentResult(BaseModel):
     """Judge agent's evaluation of search results."""
     is_sufficient: bool = Field(description="Whether the results sufficiently answer the question")
+    reasoning: str = Field(description="Chain of thought reasoning for the judgment", default="")
+    source_quality: str = Field(description="Analysis of source quality (gov/court/edu vs other)", default="")
+    date_check: str = Field(description="Analysis of date relevance and currency", default="")
+    jurisdiction_check: str = Field(description="Analysis of jurisdiction match", default="")
+    contradiction_check: str = Field(description="Check for contradictions in sources", default="")
     missing_information: List[str] = Field(description="What information is still needed", default=[])
     suggested_refinements: List[str] = Field(description="Suggested query refinements", default=[])
-    confidence: float = Field(description="Confidence in the judgment", ge=0, le=1)
 
 class FinalAnswer(BaseModel):
     """Final structured answer to the legal question."""
     answer: str = Field(description="Comprehensive answer to the legal question")
     key_points: List[str] = Field(description="Key legal points and considerations")
     sources: List[str] = Field(description="Sources used in the answer")
-    confidence: float = Field(description="Overall confidence in the answer", ge=0, le=1)
     disclaimers: List[str] = Field(description="Important legal disclaimers", default=[])
 
 class Person(BaseModel):
@@ -60,7 +62,6 @@ class QueryResult(BaseModel):
     legal_areas: List[str] = Field(description="Specific areas of law involved", default=[])
     timeline: Optional[str] = Field(description="Relevant timeline or deadlines", default=None)
     context: str = Field(description="Additional context about the legal situation")
-    confidence: float = Field(description="Confidence in the analysis", ge=0, le=1)
 
 # Wrapper classes for List types to fix structured output issues
 class FollowUpQuestionList(BaseModel):
@@ -151,7 +152,6 @@ class QueryAgent:
         5. Specific legal areas involved
         6. Timeline or deadlines if mentioned
         7. Additional context about the situation
-        8. Confidence in your analysis
         
         Be thorough but accurate in your categorization.
         """
@@ -212,12 +212,10 @@ class SearchAgent:
     
     def _parse_serper_results(self, raw_results: str, query: str) -> List[SearchResult]:
         """Parse Serper search results into structured format."""
-        # Basic parsing - in practice, you'd implement more sophisticated parsing
         return [SearchResult(
             source="Serper Web Search",
             title=f"Search results for: {query}",
-            content=raw_results[:500] + "..." if len(raw_results) > 500 else raw_results,
-            confidence=0.7
+            content=raw_results[:500] + "..." if len(raw_results) > 500 else raw_results
         )]
     
     def _parse_courtlistener_results(self, raw_results: str, query: str) -> List[SearchResult]:
@@ -225,8 +223,7 @@ class SearchAgent:
         return [SearchResult(
             source="CourtListener",
             title=f"Legal cases for: {query}",
-            content=raw_results[:500] + "..." if len(raw_results) > 500 else raw_results,
-            confidence=0.8
+            content=raw_results[:500] + "..." if len(raw_results) > 500 else raw_results
         )]
     
     def _parse_offline_rag_results(self, raw_results: str, query: str) -> List[SearchResult]:
@@ -234,8 +231,7 @@ class SearchAgent:
         return [SearchResult(
             source="Offline RAG (Local Documents)",
             title=f"Local legal documents for: {query}",
-            content=raw_results[:1000] + "..." if len(raw_results) > 1000 else raw_results,
-            confidence=0.85
+            content=raw_results[:1000] + "..." if len(raw_results) > 1000 else raw_results
         )]
 
 class JudgeAgent:
@@ -250,7 +246,6 @@ class JudgeAgent:
                         iteration_count: int = 0) -> JudgmentResult:
         """Evaluate if the search results sufficiently answer the user's question."""
         
-        # Handle o3-mini model constraints
         try:
             structured_llm = self.llm.with_structured_output(JudgmentResult)
         except Exception as e:
@@ -290,18 +285,53 @@ class JudgeAgent:
         {results_summary}
         {prev_evaluations}
         
-        CRITICAL EVALUATION CRITERIA:
-        1. Do the results DIRECTLY answer the specific legal question asked?
-        2. Is there sufficient detail for practical legal guidance?
-        3. Are there multiple sources confirming the information?
-        4. What specific legal procedures, requirements, or consequences are missing?
+        EVALUATION PROTOCOL WITH CHAIN-OF-THOUGHT:
         
-        IMPORTANT: 
-        - If this is iteration {iteration_count + 1} or higher, be MORE LENIENT and consider the cumulative information
-        - Only mark as insufficient if there are SPECIFIC, CRITICAL gaps that prevent giving practical advice
-        - Consider the user's actual situation described in the conversation history
+        1. REASONING (Chain of Thought):
+        Think step by step about whether the search results answer the user's specific question.
+        Consider: What was asked? What information was provided? What is still missing?
         
-        Be precise about what specific information is still needed.
+        2. SOURCE QUALITY CHECK:
+        Analyze source authority - are there sources from:
+        - Government (.gov) sites? 
+        - Court decisions/legal databases?
+        - Educational institutions (.edu)?
+        - How many authoritative vs user-generated content sources?
+        
+        3. DATE CHECK:
+        - Are the sources current and relevant to today's date?
+        - If there are older sources, do we also have recent confirmations?
+        - Flag if critical information might be outdated
+        
+        4. JURISDICTION CHECK:
+        - Does the jurisdiction of sources match the user's location/scope?
+        - For US federal vs state law, is the distinction clear?
+        - User mentioned: {conversation_context if conversation_context else "No specific jurisdiction mentioned"}
+        
+        5. CONTRADICTION SCAN:
+        - Do any sources contradict each other?
+        - If yes, what specific elements conflict?
+        - Do we need more specific queries to resolve conflicts?
+        
+        STOP RULE:
+        Mark as SUFFICIENT when:
+        - Primary claims have authoritative support (gov/court/edu when available)
+        - No critical information gaps for practical guidance
+        - No unresolved contradictions
+        - Jurisdiction and dates are appropriate
+        
+        Mark as INSUFFICIENT when:
+        - Missing critical legal requirements or procedures
+        - Only user-generated content for key claims
+        - Significant contradictions need resolution
+        - Wrong jurisdiction or outdated information
+        
+        IMPORTANT for iteration {iteration_count + 1}:
+        - Be MORE LENIENT after multiple iterations
+        - Focus on whether user has enough info to take action
+        - Consider cumulative information across all iterations
+        
+        Provide detailed reasoning for your judgment.
         """
         
         try:
@@ -321,8 +351,7 @@ class JudgeAgent:
             result = JudgmentResult(
                 is_sufficient=iteration_count >= 2,  # Be lenient after 2 iterations
                 missing_information=["Could not evaluate due to model error"],
-                suggested_refinements=[],
-                confidence=0.5
+                suggested_refinements=[]
             )
         
         # Store this evaluation for future reference
@@ -337,9 +366,13 @@ class JudgeAgent:
         
         return JudgmentResult(
             is_sufficient=is_sufficient,
+            reasoning=content[:500] if len(content) > 500 else content,
+            source_quality="Unable to parse source quality from response",
+            date_check="Unable to parse date check from response",
+            jurisdiction_check="Unable to parse jurisdiction check from response",
+            contradiction_check="Unable to parse contradiction check from response",
             missing_information=[] if is_sufficient else ["Additional information needed"],
-            suggested_refinements=[] if is_sufficient else ["Refine search queries"],
-            confidence=0.7
+            suggested_refinements=[] if is_sufficient else ["Refine search queries"]
         )
 
 class SummaryAgent:
@@ -373,7 +406,6 @@ class SummaryAgent:
         1. A clear, comprehensive answer
         2. Key legal points and considerations
         3. Important disclaimers about legal advice
-        4. High confidence in your response based on available information
         
         Remember: This is informational only and not legal advice.
         """
