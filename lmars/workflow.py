@@ -11,7 +11,7 @@ import uuid
 
 from .agents import SearchAgent, SummaryAgent, QueryAgent, JudgeAgent
 from .agents import SearchResult, FinalAnswer, QueryGeneration
-from .tools.serper_search_tool import search_serper_with_content
+from .tools.serper_search_tool import search_serper_web, search_serper_with_content
 from .tools.courtlistener_tool import find_legal_cases
 from .tools.offline_rag_tool import search_offline_rag
 from .trajectory_tracker import TrajectoryTracker
@@ -42,7 +42,7 @@ class SimpleWorkflow:
         
         # Initialize tools
         tools = {
-            'serper': search_serper_with_content,
+            'serper': search_serper_web,  # Use basic search for faster multiple results
             'courtlistener': find_legal_cases,
             'offline_rag': search_offline_rag,
         }
@@ -256,9 +256,9 @@ class MultiTurnWorkflow:
         # Judge model can be different
         judge_model = config.judge_model or config.llm_model
         if "o3-mini" in judge_model:
-            self.judge_llm = init_chat_model(judge_model, model_kwargs={"parallel_tool_calls": False})
+            self.judge_llm = init_chat_model(judge_model, temperature=0, model_kwargs={"parallel_tool_calls": False})
         else:
-            self.judge_llm = init_chat_model(judge_model)
+            self.judge_llm = init_chat_model(judge_model, temperature=0)  # Temperature=0 for reproducible judge evaluations
         
         self.tracker = TrajectoryTracker() if config.enable_tracking else None
         
@@ -269,7 +269,7 @@ class MultiTurnWorkflow:
         
         # Initialize tools
         tools = {
-            'serper': search_serper_with_content,
+            'serper': search_serper_web,  # Use basic search for faster multiple results
             'courtlistener': find_legal_cases,
             'offline_rag': search_offline_rag,
         }
@@ -332,15 +332,31 @@ class MultiTurnWorkflow:
             
             # Step 3: Iterative search and refinement
             all_search_results = []
+            all_executed_queries = set()  # Track all queries to avoid duplicates
             iteration = 0
             
             while iteration < self.config.max_iterations:
                 # Execute searches
                 print(f"\n🔄 Search Iteration {iteration + 1}")
-                print(f"📍 Executing {len(search_queries)} search queries...")
+                
+                # Filter out duplicate queries
+                unique_queries = []
+                for query_obj in search_queries:
+                    query_text = query_obj.query.lower().strip()
+                    if query_text not in all_executed_queries:
+                        unique_queries.append(query_obj)
+                        all_executed_queries.add(query_text)
+                
+                if not unique_queries:
+                    print("  ℹ️  No new queries to execute (all would be duplicates)")
+                    if iteration > 0:  # Force break if we've already done searches
+                        break
+                    unique_queries = search_queries  # On first iteration, use all queries
+                
+                print(f"📍 Executing {len(unique_queries)} search queries...")
                 
                 iteration_results = []
-                for query_obj in search_queries:
+                for query_obj in unique_queries:
                     print(f"  • Searching {query_obj.query_type}: \"{query_obj.query[:60]}...\"" if len(query_obj.query) > 60 else f"  • Searching {query_obj.query_type}: \"{query_obj.query}\"")
                     try:
                         results = self.search_agent.execute_search(query_obj)
@@ -427,15 +443,39 @@ class MultiTurnWorkflow:
                     print(f"🔄 Judge determined results are INSUFFICIENT. Continuing search...")
                     print()
                 
-                # Generate new queries based on missing information
-                if judgment.missing_information:
-                    # Create refined queries for missing information
+                # Generate new queries based on judge feedback
+                if judgment.suggested_refinements:
+                    # Use the judge's suggested refinements directly as search queries
                     search_queries = []
-                    for missing_info in judgment.missing_information[:2]:  # Limit to 2 new queries
+                    for refinement in judgment.suggested_refinements[:2]:  # Limit to 2 new queries
+                        # Clean up the refinement to make it a better search query
+                        # Remove phrases like "Search for", "Look for", "Find" at the beginning
+                        clean_query = refinement
+                        for prefix in ["Search for ", "Look for ", "Find ", "Seek ", "Search ", "Inquire about "]:
+                            if clean_query.startswith(prefix):
+                                clean_query = clean_query[len(prefix):]
+                                break
+                        
+                        # Remove quotes that make searches too specific
+                        clean_query = clean_query.replace('"', '').replace("'", "")
+                        
                         search_queries.append(
                             QueryGeneration(
-                                query=f"{query} {missing_info}",
+                                query=clean_query,
                                 query_type="web_search",
+                                priority="high"
+                            )
+                        )
+                elif judgment.missing_information:
+                    # Create specific search queries for missing information
+                    search_queries = []
+                    for missing_info in judgment.missing_information[:2]:  # Limit to 2 new queries
+                        # Create a focused search query for the missing information
+                        # Combine context from original query with specific missing info
+                        search_queries.append(
+                            QueryGeneration(
+                                query=missing_info,
+                                query_type="web_search",  
                                 priority="high"
                             )
                         )

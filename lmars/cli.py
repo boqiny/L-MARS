@@ -214,7 +214,25 @@ def multi_turn_mode_cli(query: str, model: str = "openai:gpt-4o", judge_model: s
                     print(f"  • {disclaimer}")
                 print()
             
-            print(f"🔄 Iterations: {result.get('iterations', 1)}")
+            # Show evaluation if available (same as simple mode)
+            if isinstance(result, dict) and 'evaluation_metrics' in result:
+                eval_metrics = result['evaluation_metrics']
+                print(f"\n📈 Quantitative Evaluation:")
+                print(f"  U-Score: {eval_metrics.u_score:.3f}")
+                interpretation = "Good" if eval_metrics.u_score < 0.4 else "Moderate" if eval_metrics.u_score < 0.7 else "High uncertainty"
+                print(f"  Interpretation: {interpretation}")
+                
+                # Show qualitative evaluation if available
+                if 'combined_evaluation' in result and result['combined_evaluation'].get('qualitative'):
+                    qual = result['combined_evaluation']['qualitative']
+                    print(f"\n🎯 Qualitative Evaluation (LLM Judge):")
+                    print(f"  Factual Accuracy: {qual.factual_accuracy.level}")
+                    print(f"  Evidence Grounding: {qual.evidence_grounding.level}")
+                    print(f"  Clarity & Reasoning: {qual.clarity_reasoning.level}")
+                    print(f"  Uncertainty Awareness: {qual.uncertainty_awareness.level}")
+                    print(f"  Overall Usefulness: {qual.overall_usefulness.level}")
+            
+            print(f"\n🔄 Iterations: {result.get('iterations', 1)}")
         
         print("="*60)
         

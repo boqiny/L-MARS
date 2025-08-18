@@ -212,11 +212,67 @@ class SearchAgent:
     
     def _parse_serper_results(self, raw_results: str, query: str) -> List[SearchResult]:
         """Parse Serper search results into structured format."""
-        return [SearchResult(
-            source="Serper Web Search",
-            title=f"Search results for: {query}",
-            content=raw_results[:500] + "..." if len(raw_results) > 500 else raw_results
-        )]
+        results = []
+        
+        # Parse the formatted Serper output
+        # The format is: "Found X relevant web results:\n\n1. Title\n   URL: ...\n   Site: ...\n   Summary: ...\n\n2. ..."
+        lines = raw_results.split('\n')
+        
+        current_result = None
+        current_title = ""
+        current_url = ""
+        current_site = ""
+        current_summary = ""
+        
+        for line in lines:
+            line = line.strip()
+            
+            # Check if this is a numbered result (e.g., "1. Title")
+            if line and line[0].isdigit() and '. ' in line:
+                # Save previous result if exists
+                if current_title and current_summary:
+                    results.append(SearchResult(
+                        source=f"Web Search - {current_site}" if current_site else "Web Search",
+                        title=current_title,
+                        content=current_summary,
+                        url=current_url if current_url else None
+                    ))
+                
+                # Start new result
+                current_title = line.split('. ', 1)[1] if '. ' in line else line
+                current_url = ""
+                current_site = ""
+                current_summary = ""
+                
+            elif line.startswith('URL: '):
+                current_url = line[5:]
+            elif line.startswith('Site: '):
+                current_site = line[6:]
+            elif line.startswith('Summary: '):
+                current_summary = line[9:]
+            elif line.startswith('Date: '):
+                # Include date in summary if present
+                if current_summary:
+                    current_summary = f"[{line[6:]}] {current_summary}"
+        
+        # Add the last result
+        if current_title and current_summary:
+            results.append(SearchResult(
+                source=f"Web Search - {current_site}" if current_site else "Web Search",
+                title=current_title,
+                content=current_summary,
+                url=current_url if current_url else None
+            ))
+        
+        # If no results were parsed, fall back to treating it as a single result
+        if not results:
+            results.append(SearchResult(
+                source="Web Search",
+                title=f"Search results for: {query}",
+                content=raw_results[:1000] + "..." if len(raw_results) > 1000 else raw_results
+            ))
+        
+        return results
     
     def _parse_courtlistener_results(self, raw_results: str, query: str) -> List[SearchResult]:
         """Parse CourtListener results into structured format."""
@@ -330,6 +386,18 @@ class JudgeAgent:
         - Be MORE LENIENT after multiple iterations
         - Focus on whether user has enough info to take action
         - Consider cumulative information across all iterations
+        
+        SUGGESTED REFINEMENTS (if insufficient):
+        Provide 1-2 specific search queries that would help find the missing information.
+        These should be actual search queries that can be executed directly, NOT instructions.
+        Good examples:
+        - "California SB 365 employment arbitration 2025 full text"
+        - "Biden student loan forgiveness Supreme Court ruling 2024"
+        - "AB 465 arbitration agreement requirements California"
+        Bad examples (don't do this):
+        - "Search for more information about SB 365"
+        - "Look for court rulings"
+        - "Find government sources"
         
         Provide detailed reasoning for your judgment.
         """

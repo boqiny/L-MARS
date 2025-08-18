@@ -62,7 +62,7 @@ class LLMJudgeEvaluator:
         Args:
             model: LLM model to use for evaluation
         """
-        self.llm = init_chat_model(model)
+        self.llm = init_chat_model(model, temperature=0)  # Temperature=0 for reproducible evaluations
     
     def evaluate(self, 
                  question: str, 
