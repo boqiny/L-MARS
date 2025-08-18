@@ -269,7 +269,7 @@ class MultiTurnWorkflow:
         
         # Initialize tools
         tools = {
-            'serper': search_serper_web,  # Use basic search for faster multiple results
+            'serper': search_serper_with_content,  # Use deep search for thorough analysis in multi-turn mode
             'courtlistener': find_legal_cases,
             'offline_rag': search_offline_rag,
         }

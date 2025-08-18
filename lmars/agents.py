@@ -215,7 +215,9 @@ class SearchAgent:
         results = []
         
         # Parse the formatted Serper output
-        # The format is: "Found X relevant web results:\n\n1. Title\n   URL: ...\n   Site: ...\n   Summary: ...\n\n2. ..."
+        # Formats: 
+        # Basic: "Found X relevant web results:\n\n1. Title\n   URL: ...\n   Site: ...\n   Summary: ...\n\n2. ..."
+        # With content: "Found X web results with content:\n\n1. Title\n   URL: ...\n   Site: ...\n   Summary: ...\n   Content: ...\n\n2. ..."
         lines = raw_results.split('\n')
         
         current_result = None
@@ -223,6 +225,7 @@ class SearchAgent:
         current_url = ""
         current_site = ""
         current_summary = ""
+        current_content = ""
         
         for line in lines:
             line = line.strip()
@@ -230,11 +233,13 @@ class SearchAgent:
             # Check if this is a numbered result (e.g., "1. Title")
             if line and line[0].isdigit() and '. ' in line:
                 # Save previous result if exists
-                if current_title and current_summary:
+                if current_title and (current_summary or current_content):
+                    # Use content if available (from deep search), otherwise use summary
+                    final_content = current_content if current_content else current_summary
                     results.append(SearchResult(
                         source=f"Web Search - {current_site}" if current_site else "Web Search",
                         title=current_title,
-                        content=current_summary,
+                        content=final_content,
                         url=current_url if current_url else None
                     ))
                 
@@ -243,6 +248,7 @@ class SearchAgent:
                 current_url = ""
                 current_site = ""
                 current_summary = ""
+                current_content = ""
                 
             elif line.startswith('URL: '):
                 current_url = line[5:]
@@ -250,17 +256,21 @@ class SearchAgent:
                 current_site = line[6:]
             elif line.startswith('Summary: '):
                 current_summary = line[9:]
+            elif line.startswith('Content: '):
+                # For deep search results with full content
+                current_content = line[9:]
             elif line.startswith('Date: '):
                 # Include date in summary if present
                 if current_summary:
                     current_summary = f"[{line[6:]}] {current_summary}"
         
         # Add the last result
-        if current_title and current_summary:
+        if current_title and (current_summary or current_content):
+            final_content = current_content if current_content else current_summary
             results.append(SearchResult(
                 source=f"Web Search - {current_site}" if current_site else "Web Search",
                 title=current_title,
-                content=current_summary,
+                content=final_content,
                 url=current_url if current_url else None
             ))
         

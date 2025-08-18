@@ -10,3 +10,5 @@ __pycache__/
 /inputs/
 /eval/dataset/
 /eval/results/
+
+.DS_Store
