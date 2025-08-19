@@ -1,14 +1,14 @@
 # L-MARS - Enhanced Multi-Agent Workflow for Legal QA
 
-L-MARS (Legal Multi-Agent Framework for Orchestrated Reasoning and Agentic Search)combines multiple search strategies, agent-based reasoning, and dual evaluation systems for legal QA.
+L-MARS (Legal Multi-Agent Framework for Orchestrated Reasoning and Agentic Search)combines multiple search strategies, agent-based reasoning, and evaluation systems for legal QA.
 
 ## Key Features
 
-### Operating Modes
+### Operating Mode
 - **Simple Mode**: Fast single-turn pipeline with multiple search results
 - **Multi-Turn Mode**: Iterative refinement with judge agent evaluation and deep content extraction
 
-### Retrieval Sources (Configurable)
+### Retrieval Source
 1. **Online Search** (Default): Web search via Serper API - **Always enabled**
    - Simple mode: Quick search returning 5 results with snippets
    - Multi-turn mode: Deep search returning 3 results with full content extraction
@@ -160,28 +160,12 @@ python infer_multiturn_lmars.py   # Multi-turn with refinement
 python analyze_results.py
 ```
 
-## Search Strategy Details
-
-### Simple Mode Search
-- Uses `search_serper_web()` for fast retrieval
-- Returns 5 results with titles, URLs, and snippets
-- No content extraction from individual pages
-- Optimized for speed and broad coverage
-
-### Multi-Turn Mode Search  
-- Uses `search_serper_with_content()` for deep analysis
-- Returns 3 results with full webpage content extraction
-- Includes smart snippet matching and context extraction
-- Judge agent evaluates with temperature=0 for reproducibility
-- Automatic query refinement based on missing information
-
 ## Disclaimers
 
 - This system provides legal information, not legal advice
 - Always consult with qualified attorneys for specific legal matters
 - Results are based on available sources and may not be comprehensive
 - Laws vary by jurisdiction and change over time
-- Local documents in `inputs/` should be kept up-to-date
 
 ## License
 
