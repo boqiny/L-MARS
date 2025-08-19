@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-L-MARS Command Line Interface - Simplified version
+L-MARS Command Line Interface
 Default: Simple mode for quick legal research
 Optional: Multi-turn mode for complex queries
 """
@@ -256,100 +256,6 @@ def multi_turn_mode_cli(query: str, model: str = "openai:gpt-4o", judge_model: s
     return 0
 
 
-def interactive_mode():
-    """Interactive command-line session."""
-    print("\n🏛️ L-MARS Legal Research System - Interactive Mode")
-    print("Type 'help' for commands, 'exit' to quit\n")
-    print("💡 Tip: Use 'sources' command to enable/disable search sources\n")
-    
-    workflow = None
-    current_mode = "simple"
-    enable_offline_rag = False
-    enable_courtlistener = False
-    
-    while True:
-        try:
-            command = input(f"[{current_mode}]> ").strip()
-            
-            if not command:
-                continue
-            
-            if command.lower() == 'exit':
-                print("👋 Goodbye!")
-                break
-            
-            elif command.lower() == 'help':
-                print("\nAvailable commands:")
-                print("  help     - Show this help message")
-                print("  simple   - Switch to simple mode (fast, single-turn)")
-                print("  multi    - Switch to multi-turn mode (thorough, iterative)")
-                print("  sources  - Configure search sources")
-                print("  exit     - Exit the program")
-                print("\nOr type your legal question directly\n")
-            
-            elif command.lower() == 'sources':
-                print("\n📚 Search Source Configuration")
-                print(f"  1. Web Search (Serper): Always enabled")
-                print(f"  2. Offline RAG: {'✅ Enabled' if enable_offline_rag else '❌ Disabled'}")
-                print(f"  3. CourtListener: {'✅ Enabled' if enable_courtlistener else '❌ Disabled'}")
-                print("\nToggle sources:")
-                print("  'sources offline' - Toggle offline RAG")
-                print("  'sources court' - Toggle CourtListener")
-                print("  'sources all' - Enable all sources")
-                print("  'sources none' - Disable optional sources\n")
-            
-            elif command.lower().startswith('sources '):
-                subcmd = command.lower().split()[1] if len(command.split()) > 1 else ""
-                if subcmd == 'offline':
-                    enable_offline_rag = not enable_offline_rag
-                    print(f"✅ Offline RAG {'enabled' if enable_offline_rag else 'disabled'}")
-                    workflow = None  # Reset workflow
-                elif subcmd == 'court':
-                    enable_courtlistener = not enable_courtlistener
-                    print(f"✅ CourtListener {'enabled' if enable_courtlistener else 'disabled'}")
-                    workflow = None  # Reset workflow
-                elif subcmd == 'all':
-                    enable_offline_rag = True
-                    enable_courtlistener = True
-                    print("✅ All sources enabled")
-                    workflow = None
-                elif subcmd == 'none':
-                    enable_offline_rag = False
-                    enable_courtlistener = False
-                    print("✅ Optional sources disabled (only web search)")
-                    workflow = None
-                else:
-                    print("❌ Unknown sources command. Use 'sources' for help.")
-                print()
-            
-            elif command.lower() == 'simple':
-                current_mode = "simple"
-                workflow = None
-                print("✅ Switched to Simple Mode (fast, single-turn)\n")
-            
-            elif command.lower() == 'multi':
-                current_mode = "multi_turn"
-                workflow = None
-                print("✅ Switched to Multi-Turn Mode (thorough, iterative)\n")
-            
-            else:
-                # Treat as a legal query
-                # Each query gets its own log in interactive mode
-                if current_mode == "simple":
-                    simple_mode_cli(command, verbose=True, 
-                                  enable_offline_rag=enable_offline_rag,
-                                  enable_courtlistener=enable_courtlistener)
-                else:
-                    multi_turn_mode_cli(command,
-                                      enable_offline_rag=enable_offline_rag,
-                                      enable_courtlistener=enable_courtlistener)
-                print()
-        
-        except KeyboardInterrupt:
-            print("\n\n👋 Goodbye!")
-            break
-        except Exception as e:
-            print(f"❌ Error: {e}\n")
 
 
 def main():
@@ -370,9 +276,6 @@ Examples:
   
   # Multi-turn mode
   python -m lmars.cli --multi "Complex contract dispute..."
-  
-  # Interactive mode
-  python -m lmars.cli --interactive
         """
     )
     
@@ -388,11 +291,6 @@ Examples:
         help="Use multi-turn mode for thorough research"
     )
     
-    parser.add_argument(
-        "--interactive", "-i",
-        action="store_true",
-        help="Start interactive session"
-    )
     
     parser.add_argument(
         "--model",
@@ -449,10 +347,7 @@ Examples:
         return 1
     
     # Handle different modes
-    if args.interactive:
-        return interactive_mode()
-    
-    elif args.query:
+    if args.query:
         if args.multi:
             return multi_turn_mode_cli(
                 args.query,

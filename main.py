@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-L-MARS Main Entry Point - Simplified Version
-Default: Interactive CLI with Simple Mode
+L-MARS Main Entry Point
+Default: Simple Mode for quick legal research
 """
 import sys
 import os

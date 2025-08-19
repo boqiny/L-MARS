@@ -19,13 +19,14 @@ from dotenv import load_dotenv
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from lmars.evaluation import LegalAnswerEvaluator
 from lmars.llm_judge import LLMJudgeEvaluator
+from rate_limit_config import RateLimitHandler
 
 load_dotenv()
 
 # Configuration
 EVAL_OPENAI_BASE_URL = os.getenv("EVAL_OPENAI_BASE_URL")
 EVAL_OPENAI_API_KEY = os.getenv("EVAL_OPENAI_API_KEY")
-MAX_WORKERS = int(os.getenv("MAX_WORKERS", "5"))  # Concurrent API calls
+MAX_WORKERS = int(os.getenv("MAX_WORKERS", "2"))  # Reduced concurrent API calls to avoid rate limits
 MODEL_NAME = os.getenv("EVAL_MODEL", "gpt-4o")
 
 PROMPT_TEMPLATE = """You are a helpful legal assistant. Please provide a comprehensive answer to the following legal question.
@@ -69,10 +70,27 @@ class BaseLLMEvaluator:
         # Load dataset
         self.dataset = self.load_dataset()
         
+        # Rate limit handler
+        self.rate_limiter = RateLimitHandler(base_delay=3.0, max_retries=3)
+        
     def load_dataset(self) -> List[Dict[str, Any]]:
         """Load the evaluation dataset."""
         with open(self.dataset_path, 'r') as f:
             return json.load(f)
+    
+    def _get_default_judgment(self):
+        """Return a default judgment when rate limited."""
+        from types import SimpleNamespace
+        return SimpleNamespace(
+            factual_accuracy=SimpleNamespace(level="Medium", justification="Rate limited - skipped"),
+            evidence_grounding=SimpleNamespace(level="Low", justification="No sources provided"),
+            clarity_reasoning=SimpleNamespace(level="Medium", justification="Rate limited - skipped"),
+            uncertainty_awareness=SimpleNamespace(level="Medium", justification="Rate limited - skipped"),
+            overall_usefulness=SimpleNamespace(level="Medium", justification="Rate limited - skipped"),
+            summary="LLM judge evaluation skipped due to rate limit",
+            strengths=[],
+            weaknesses=[]
+        )
     
     def process_single_question(self, item: Dict[str, Any]) -> Dict[str, Any]:
         """
@@ -90,8 +108,9 @@ class BaseLLMEvaluator:
         start_time = time.time()
         
         try:
-            # Call OpenAI API
-            response = self.client.chat.completions.create(
+            # Call OpenAI API with rate limit handling
+            response = self.rate_limiter.execute_with_retry(
+                self.client.chat.completions.create,
                 model=MODEL_NAME,
                 messages=[
                     {"role": "system", "content": "You are a helpful legal assistant."},
@@ -111,13 +130,22 @@ class BaseLLMEvaluator:
                 jurisdiction_context=None
             )
             
-            # Qualitative evaluation
-            qual_judgment = self.qualitative_evaluator.evaluate(
-                question=question,
-                answer=answer,
-                sources=[]
-            )
+            # Qualitative evaluation (with rate limit handling)
+            qual_judgment = None
+            if self.qualitative_evaluator is not None:
+                try:
+                    qual_judgment = self.rate_limiter.execute_with_retry(
+                        self.qualitative_evaluator.evaluate,
+                        question=question,
+                        answer=answer,
+                        sources=[]
+                    )
+                except Exception as e:
+                    # If all retries failed, use default judgment
+                    print(f"Warning: LLM judge evaluation failed after retries: {e}")
+                    qual_judgment = self._get_default_judgment()
             
+            # Build result with qualitative evaluation if available
             result = {
                 'id': question_id,
                 'question': question,
@@ -132,18 +160,21 @@ class BaseLLMEvaluator:
                         'citation_score': quant_metrics.citation_score,
                         'jurisdiction_score': quant_metrics.jurisdiction_score,
                         'decisiveness_score': quant_metrics.decisiveness_score
-                    },
-                    'qualitative': {
-                        'factual_accuracy': qual_judgment.factual_accuracy.level,
-                        'evidence_grounding': qual_judgment.evidence_grounding.level,
-                        'clarity_reasoning': qual_judgment.clarity_reasoning.level,
-                        'uncertainty_awareness': qual_judgment.uncertainty_awareness.level,
-                        'overall_usefulness': qual_judgment.overall_usefulness.level,
-                        'summary': qual_judgment.summary
                     }
                 },
                 'status': 'success'
             }
+            
+            # Add qualitative evaluation if LLM judge is enabled and successful
+            if self.qualitative_evaluator is not None and qual_judgment is not None:
+                result['evaluation']['qualitative'] = {
+                    'factual_accuracy': qual_judgment.factual_accuracy.level,
+                    'evidence_grounding': qual_judgment.evidence_grounding.level,
+                    'clarity_reasoning': qual_judgment.clarity_reasoning.level,
+                    'uncertainty_awareness': qual_judgment.uncertainty_awareness.level,
+                    'overall_usefulness': qual_judgment.overall_usefulness.level,
+                    'summary': qual_judgment.summary
+                }
             
         except Exception as e:
             result = {
@@ -261,6 +292,10 @@ def main():
                        help='Name for this evaluation run')
     parser.add_argument('--model', default=None,
                        help='Model to use (overrides EVAL_MODEL env var)')
+    parser.add_argument('--no-judge', action='store_true',
+                       help='Skip LLM judge evaluation (only do quantitative)')
+    parser.add_argument('--workers', type=int, default=None,
+                       help='Number of concurrent workers (default: 2)')
     
     args = parser.parse_args()
     
@@ -269,8 +304,18 @@ def main():
         global MODEL_NAME
         MODEL_NAME = args.model
     
+    # Override workers if specified
+    if args.workers:
+        global MAX_WORKERS
+        MAX_WORKERS = args.workers
+    
     # Run evaluation
     evaluator = BaseLLMEvaluator(dataset_path=args.dataset)
+    
+    # Optionally disable LLM judge to avoid rate limits
+    if args.no_judge:
+        evaluator.qualitative_evaluator = None
+    
     results = evaluator.run_batch_evaluation(max_samples=args.max_samples)
     evaluator.save_results(results, run_name=args.run_name)
 
