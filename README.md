@@ -4,20 +4,16 @@ L-MARS (Legal Multi-Agent Framework for Orchestrated Reasoning and Agentic Searc
 
 ## Key Features
 
-### Dual Operating Modes
+### Operating Modes
 - **Simple Mode**: Fast single-turn pipeline with multiple search results
 - **Multi-Turn Mode**: Iterative refinement with judge agent evaluation and deep content extraction
 
-### Three Retrieval Sources (Configurable)
+### Retrieval Sources (Configurable)
 1. **Online Search** (Default): Web search via Serper API - **Always enabled**
    - Simple mode: Quick search returning 5 results with snippets
    - Multi-turn mode: Deep search returning 3 results with full content extraction
 2. **Local RAG** (Optional): BM25-based local document retrieval from `inputs/` folder - Enable with `--offline-rag`
 3. **Case Law** (Optional): Legal case retrieval via CourtListener API - Enable with `--courtlistener`
-
-### Dual Evaluation System
-- **Quantitative U-Score**: Objective metrics measuring hedging, citations, jurisdiction clarity, temporal specificity, and decisiveness
-- **Qualitative LLM Judge**: Subjective assessment of factual accuracy, evidence grounding, clarity, uncertainty awareness, and overall usefulness
 
 ## Quick Start
 
@@ -77,33 +73,6 @@ python main.py --multi "Complex contract dispute..."
 
 # With custom iterations
 python main.py --multi --max-iterations 5 "Your question"
-```
-
-### Python API
-
-```python
-from lmars import create_workflow
-
-# Simple Mode with online search (default)
-workflow = create_workflow(mode="simple")
-result = workflow.run("Can I form an LLC as a non-resident?")
-print(result["final_answer"].answer)
-print(f"U-Score: {result['evaluation_metrics'].u_score:.3f}")
-print(f"Quality: {result['combined_evaluation']['qualitative'].overall_usefulness.level}")
-
-# Multi-Turn Mode with deep search
-workflow = create_workflow(
-    mode="multi_turn",
-    max_iterations=3,
-    judge_model="openai:gpt-4o",  # Explicit judge model with temperature=0
-    enable_offline_rag=True
-)
-result = workflow.run("Complex IP licensing question...")
-
-# Access evaluation results
-print(f"Iterations: {result['iterations']}")
-print(f"U-Score: {result['evaluation_metrics'].u_score:.3f}")
-print(f"LLM Judge: {result['combined_evaluation']['qualitative'].summary}")
 ```
 
 ### Streamlit Web Interface
@@ -172,13 +141,6 @@ Five assessment dimensions (Low/Medium/High):
 - **Clarity & Reasoning**: Logical structure and explanation
 - **Uncertainty Awareness**: Appropriate hedging and limitations
 - **Overall Usefulness**: Practical value for the user
-
-## Offline RAG Features
-
-- **BM25 Algorithm**: State-of-the-art ranking for document retrieval
-- **Smart Chunking**: 500-char chunks with 100-char overlap
-- **Automatic Indexing**: All markdown files in `inputs/` folder
-- **Hot Reload**: Add documents anytime without restart
 
 ## Evaluation
 
