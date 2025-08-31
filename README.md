@@ -1,6 +1,6 @@
 # L-MARS - Enhanced Multi-Agent Workflow for Legal QA
 
-L-MARS (Legal Multi-Agent Framework for Orchestrated Reasoning and Agentic Search)combines multiple search strategies, agent-based reasoning, and evaluation systems for legal QA.
+L-MARS (Legal Multi-Agent Framework for Orchestrated Reasoning and Agentic Search) combines multiple search strategies, agent-based reasoning, and evaluation systems for legal QA.
 
 ## Key Features
 
@@ -124,42 +124,6 @@ Iterative Loop (max_iterations):
 Summary Agent → Dual Evaluation → Final Answer
 ```
 
-## Evaluation System
-
-### Quantitative U-Score (0-1 scale)
-Weighted combination of five metrics:
-- **Hedging Score (20%)**: Measures uncertainty language and conditional statements
-- **Temporal Vagueness (10%)**: Detects vague temporal references
-- **Citation Score (25%)**: Evaluates source citations and references
-- **Jurisdiction Score (20%)**: Checks for jurisdiction clarity and specificity
-- **Decisiveness Score (25%)**: Assesses answer clarity and directness
-
-### Qualitative LLM Judge
-Five assessment dimensions (Low/Medium/High):
-- **Factual Accuracy**: Correctness of legal information
-- **Evidence Grounding**: Quality of source support
-- **Clarity & Reasoning**: Logical structure and explanation
-- **Uncertainty Awareness**: Appropriate hedging and limitations
-- **Overall Usefulness**: Practical value for the user
-
-## Evaluation
-
-The `eval/` folder contains tools for systematic evaluation:
-
-```bash
-# Evaluate all three modes on a dataset
-cd eval
-python run_all_evaluations.py
-
-# Individual mode evaluation
-python infer_base_llm.py          # Pure LLM baseline
-python infer_simple_lmars.py      # Simple mode with search
-python infer_multiturn_lmars.py   # Multi-turn with refinement
-
-# Analyze results
-python analyze_results.py
-```
-
 ## Disclaimers
 
 - This system provides legal information, not legal advice
@@ -169,4 +133,4 @@ python analyze_results.py
 
 ## License
 
-MIT License - See LICENSE file for details
+MIT License

@@ -10,5 +10,7 @@ __pycache__/
 /inputs/
 /eval/dataset/
 /eval/results/
+/eval/mcq_results/
+
 
 .DS_Store
