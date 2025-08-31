@@ -80,7 +80,7 @@ def main():
     # input_file = "eval/qa_exe_orders_4.json"
     # input_file = "eval/qa_f1_rules.json"
     # input_file = "eval/qa_tax_rules.json"
-    input_file = "eval/qa_housing.json"
+    input_file = "eval/dataset/combined_datasets.json"
     model = "gpt-4o"
     max_workers = 5
     
