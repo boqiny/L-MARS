@@ -51,13 +51,13 @@ The system will automatically index and search these documents.
 
 ### Command Line Usage
 
-#### Simple Mode (Default - Online Search Only)
+#### Simple Mode
 ```bash
 # Quick legal research with online search only (default)
-python main.py "Can an F1 student work remotely?"
+python main.py "Your legal question"
 
 # Enable offline RAG for local documents
-python main.py --offline-rag "Can an F1 student work remotely?"
+python main.py --offline-rag "Your legal question"
 
 # Enable all sources (offline RAG + CourtListener + web search)
 python main.py --all-sources "Your legal question"
