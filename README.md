@@ -1,6 +1,7 @@
 # L-MARS - Enhanced Multi-Agent Workflow for Legal QA
 
 L-MARS (Legal Multi-Agent Framework for Orchestrated Reasoning and Agentic Search) combines multiple search strategies, agent-based reasoning, and evaluation systems for legal QA.
+![workflow](https://github.com/user-attachments/assets/c047aa4d-7d29-4a2d-bf32-e34a00d7058d)
 
 ## Key Features
 
