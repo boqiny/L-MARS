@@ -1,5 +1,7 @@
 # L-MARS - Enhanced Multi-Agent Workflow for Legal QA
 
+📄 **Paper:** [L-MARS: Legal Multi-Agent Workflow with Orchestrated Reasoning and Agentic Search](https://arxiv.org/abs/2509.00761)
+
 L-MARS (Legal Multi-Agent Framework for Orchestrated Reasoning and Agentic Search) combines multiple search strategies, agent-based reasoning, and evaluation systems for legal QA.
 ![workflow](https://github.com/user-attachments/assets/c047aa4d-7d29-4a2d-bf32-e34a00d7058d)
 
@@ -76,62 +78,17 @@ python main.py --multi "Complex contract dispute..."
 python main.py --multi --max-iterations 5 "Your question"
 ```
 
-### Streamlit Web Interface
+## Citation
 
-```bash
-# Run the web interface
-streamlit run app/main.py
-```
+If you use **L-MARS** in your research, please cite:
 
-## System Architecture
-
-### Simple Mode Pipeline
-```
-User Query
-    ↓
-Search Generation (based on enabled sources)
-    ↓
-├── Offline RAG (BM25, if enabled)
-├── Serper Web Search (5 results, snippets only)
-└── CourtListener (if enabled)
-    ↓
-Summary Agent (LLM)
-    ↓
-Dual Evaluation
-├── Quantitative: U-Score (0-1)
-└── Qualitative: LLM Judge (Low/Medium/High)
-    ↓
-Final Answer with Metrics
-```
-
-### Multi-Turn Mode Pipeline
-```
-User Query
-    ↓
-Query Agent: Generate Follow-up Questions
-    ↓
-[Optional: User Responses]
-    ↓
-Iterative Loop (max_iterations):
-    ├── Generate Search Queries
-    ├── Execute Deep Search (3 results with content)
-    ├── Judge Agent Evaluation (temperature=0)
-    │   ├── Chain-of-Thought Reasoning
-    │   ├── Source Quality Check
-    │   ├── Date/Jurisdiction/Contradiction Analysis
-    │   └── Sufficiency Decision
-    └── If Insufficient: Generate Refinement Queries
-    ↓
-Summary Agent → Dual Evaluation → Final Answer
-```
-
-## Disclaimers
-
-- This system provides legal information, not legal advice
-- Always consult with qualified attorneys for specific legal matters
-- Results are based on available sources and may not be comprehensive
-- Laws vary by jurisdiction and change over time
-
-## License
-
-MIT License
+```bibtex
+@misc{wang2025lmarslegalmultiagentworkflow,
+      title={L-MARS: Legal Multi-Agent Workflow with Orchestrated Reasoning and Agentic Search}, 
+      author={Ziqi Wang and Boqin Yuan},
+      year={2025},
+      eprint={2509.00761},
+      archivePrefix={arXiv},
+      primaryClass={cs.AI},
+      url={https://arxiv.org/abs/2509.00761}, 
+}
