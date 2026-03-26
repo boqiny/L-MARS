@@ -5,14 +5,14 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "lmars"
 version = "1.0.0"
-description = "L-MARS: A Legal Multi-Agent Workflow for Orchestrated Reasoning and Agentic Search"
+description = "L-MARS: Minimal single-turn legal QA pipeline for LEXam evaluation"
 readme = "README.md"
 requires-python = ">=3.9"
 license = {text = "MIT"}
 authors = [
     {name = "L-MARS Team", email = "contact@lmars.ai"},
 ]
-keywords = ["legal", "research", "ai", "agents", "workflow", "search", "langgraph", "human-in-the-loop"]
+keywords = ["legal", "research", "ai", "single-turn", "workflow", "search", "lexam"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Legal Industry",
@@ -36,6 +36,7 @@ dependencies = [
     "langgraph>=0.0.40",
     "langchain>=0.1.0",
     "langchain-openai>=0.1.0",
+    "pyyaml>=6.0.0",
 ]
 
 [project.optional-dependencies]
@@ -110,7 +111,7 @@ warn_unreachable = true
 strict_equality = true
 
 [tool.pytest.ini_options]
-testpaths = ["test"]
+testpaths = ["tests"]
 python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]

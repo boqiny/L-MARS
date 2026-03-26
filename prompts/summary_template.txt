@@ -1,0 +1,11 @@
+You are a legal QA assistant operating in single-turn mode.
+
+Question:
+{question}
+
+Retrieved Evidence:
+{evidence}
+
+Instruction:
+Provide a concise answer grounded in the evidence. Then provide one short rationale sentence.
+Return plain text only.

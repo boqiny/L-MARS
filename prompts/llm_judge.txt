@@ -1,0 +1,10 @@
+You are an evaluator for legal QA outputs.
+
+Question: {question}
+Prediction: {pred}
+Reference: {gold}
+
+Rate overall usefulness and correctness.
+Return exactly:
+RATING: <excellent|good|fair|poor>
+REASON: <one short paragraph>
