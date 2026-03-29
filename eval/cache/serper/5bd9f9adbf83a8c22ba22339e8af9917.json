@@ -1,0 +1,52 @@
+{
+  "query": "US law: The SEC's transition to T+1 securities settlement took effect on what date, shortening the standard settlement cycle from T+2?",
+  "fetched_at": "2026-03-26T08:45:46.568473+00:00",
+  "fetched_k": 10,
+  "results": [
+    {
+      "title": "Shortening the Securities Transaction Settlement Cycle - SEC.gov",
+      "snippet": "On February 15, 2023, the Securities and Exchange Commission (“Commission”) adopted rule amendments to shorten the standard settlement cycle ...",
+      "url": "https://www.sec.gov/investment/settlement-cycle-small-entity-compliance-guide-15c6-1-15c6-2-204-2"
+    },
+    {
+      "title": "SEC Shortening Trade Settlement Cycle from T+2 to T+1",
+      "snippet": "The SEC announced in 2023 that trade settlement will be reduced from T+2 to T+1 in 2024. The SEC set compliance with the new T+1 rule to begin on May 28, 2024.",
+      "url": "https://www.kaplanfinancial.com/resources/industry-updates/trade-settlement-cycle-shortened"
+    },
+    {
+      "title": "Understanding Settlement Cycles: What Does T+1 Mean for You?",
+      "snippet": "In 2017, the SEC shortened the settlement cycle from T+3 to T+2. The move to T+1 reflects improvements in technology that allow trades to settle ...",
+      "url": "https://www.finra.org/investors/insights/understanding-settlement-cycles"
+    },
+    {
+      "title": "SEC final rule for T+1 settlement cycle - KPMG International",
+      "snippet": "Shortening the settlement cycle for firm commitment offerings for securities priced after 4:30PM ET from T+4 to T+2, unless otherwise expressly agreed to by the ...",
+      "url": "https://kpmg.com/us/en/articles/2023/sec-final-rule-t1-settlement-cycle.html"
+    },
+    {
+      "title": "SEC Adopts Rules Shortening the Standard Settlement Cycle to T+1",
+      "snippet": "Effective May 28, 2024, the Securities and Exchange Commission will move from the current T+2 settlement (transaction date plus two business ...",
+      "url": "https://sodali.com/resources/insights/sec-adopts-rules-shortening-the-standard-settlement-cycle-to-t1"
+    },
+    {
+      "title": "Securities Operations: Shortening the Standard Settlement Cycle",
+      "snippet": "On February 15, 2023, the SEC adopted amendments to Rule 15c6-1 that shorten the standard settlement cycle for most broker-dealer transactions from T+2 to T+1.",
+      "url": "https://www.occ.gov/news-issuances/bulletins/2024/bulletin-2024-3.html"
+    },
+    {
+      "title": "New “T+1” Settlement Cycle – What Investors Need To Know",
+      "snippet": "On February 15, 2023, the Securities and Exchange Commission adopted rule amendments to shorten the standard settlement cycle for most ...",
+      "url": "https://www.investor.gov/introduction-investing/general-resources/news-alerts/alerts-bulletins/investor-bulletins/new-t1-settlement-cycle-what-investors-need-know-investor-bulletin"
+    },
+    {
+      "title": "SEC Adopts Rules Shortening the Standard Settlement Cycle to T+1",
+      "snippet": "The final rules become effective on May 5, 2023, but are subject to a transition period. While the amended rules' exclusion for security-based ...",
+      "url": "https://www.wilmerhale.com/en/insights/client-alerts/20230413-sec-adopts-rules-shortening-the-standard-settlement-cycle-to-t1"
+    },
+    {
+      "title": "“T+1” – the shortening of standard settlement cycles - ICMA",
+      "snippet": "In May 2024, the US, along with Canada and Mexico, shortened the standard settlement cycle for most broker-dealer transactions from two business days after ...",
+      "url": "https://www.icmagroup.org/market-practice-and-regulatory-policy/repo-and-collateral-markets/t-1-the-shortening-of-standard-settlement-cycles/"
+    }
+  ]
+}

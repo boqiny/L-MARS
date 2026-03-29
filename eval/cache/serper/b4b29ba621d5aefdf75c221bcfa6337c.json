@@ -1,0 +1,57 @@
+{
+  "query": "US law: The New Jersey Data Privacy Act (NJDPA), effective January 15, 2025, includes a Global Privacy Control (GPC) requirement. By what date must covered controllers begin honoring browser-based universal o",
+  "fetched_at": "2026-03-26T08:45:48.339557+00:00",
+  "fetched_k": 10,
+  "results": [
+    {
+      "title": "Frequently Asked Questions About the New Jersey Data Protection ...",
+      "snippet": "“In the meantime,” the division noted, “controllers and processors are required to comply with the [NJDPA] starting on January 15, 2025.",
+      "url": "https://ogletree.com/insights-resources/blog-posts/frequently-asked-questions-about-the-new-jersey-data-protection-act-effective-january-15-2025/"
+    },
+    {
+      "title": "New Jersey Enacts Comprehensive Data Privacy Law - NJCCIC",
+      "snippet": "Signed into law by Governor Murphy on January 16, 2024, the law went into effect on January 15, 2025. It aims to establish robust protections for NJ residents ...",
+      "url": "https://www.cyber.nj.gov/guidance-and-best-practices/identity-theft-privacy/data-privacy/nj-data-privacy-prevention-act"
+    },
+    {
+      "title": "Global Privacy Controls: Preparing for the Next Wave of Enforcement",
+      "snippet": "As of July 1, 2024, the CPA requires businesses to recognize approved universal opt-out signals such as the GPC and treat them as a binding opt- ...",
+      "url": "https://www.foster.com/newsroom-alerts-global-privacy-controls-preparing-for-the-next-wave-of-enforcement"
+    },
+    {
+      "title": "New Jersey Data Privacy Act: First Look & Summary - Termly",
+      "snippet": "The UOOM requirements become effective no later than six months following the effective date of the new law. ... Must honor Global Privacy Controls/browser ...",
+      "url": "https://termly.io/resources/articles/new-jersey-data-privacy-act/"
+    },
+    {
+      "title": "Pages - New Jersey Data Privacy Law FAQs - NJ Consumer Affairs",
+      "snippet": "In addition, by July 15, 2025, controllers must honor opt out signals sent by consumers through \"universal opt-out mechanisms.\" Universal opt- ...",
+      "url": "https://www.njconsumeraffairs.gov/ocp/Pages/NJ-Data-Privacy-Law-FAQ.aspx"
+    },
+    {
+      "title": "New Jersey Data Privacy Act (NJDPA): What You Need to Know",
+      "snippet": "The New Jersey Data Protection Act (NJDPA), effective January 15, 2025, is unique for its 15-day opt-out processing requirement, much shorter ...",
+      "url": "https://www.ketch.com/regulatory-compliance/new-jersey-data-privacy-act-njdpa"
+    },
+    {
+      "title": "Global Privacy Control (GPC) in 2026 | GPC compliance - Didomi",
+      "snippet": "Under the new law, however, major browsers, such as Google Chrome, Apple Safari, and Microsoft Edge, will be required to offer GPC capabilities ...",
+      "url": "https://www.didomi.io/blog/global-privacy-control-gpc-2026"
+    },
+    {
+      "title": "Get to Know the Global Privacy Control (GPC): State Attorneys ...",
+      "snippet": "A Global Privacy Control (GPC) (also known as an “opt-out signal”) as a simple, browser-based way for a consumer to decline the sharing of personal information.",
+      "url": "https://www.nelsonmullins.com/insights/alerts/privacy_and_data_security_alert/all/get-to-know-the-global-privacy-control-gpc-state-attorneys-general-remind-consumers-of-their-right-to-opt-out-of-the-sale-or-sharing-of-personal-information"
+    },
+    {
+      "title": "Proposed New Jersey Regulations Would Require Major Privacy ...",
+      "snippet": "The NJDPA took effect on January 15, 2025. It applies to any business that conducts business in New Jersey or produces products or services ...",
+      "url": "https://www.fisherphillips.com/en/insights/insights/proposed-new-jersey-regulations-would-require-major-privacy-compliance-shifts-for-businesses"
+    },
+    {
+      "title": "Global Privacy Control (GPC) and Universal Opt-Out - Osano",
+      "snippet": "Learn how universal opt-out signals like GPC empower consumer privacy and what businesses must do to comply with evolving state privacy ...",
+      "url": "https://www.osano.com/articles/global-privacy-control"
+    }
+  ]
+}

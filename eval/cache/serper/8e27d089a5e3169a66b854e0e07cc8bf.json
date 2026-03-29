@@ -1,0 +1,52 @@
+{
+  "query": "US law: In the 2025 Texas legislative session, what did SB 1362 (the 'Anti-Red Flag Act') accomplish?",
+  "fetched_at": "2026-03-26T08:45:43.200168+00:00",
+  "fetched_k": 10,
+  "results": [
+    {
+      "title": "Texas “Anti-Red Flag Act” advances in House - The Texas Tribune",
+      "snippet": "Senate Bill 1362 would prevent officials from taking someone's firearms if they haven't been charged with a crime or aren't subject to a protective order.",
+      "url": "https://www.texastribune.org/2025/05/27/texas-anti-red-flag-law-senate-bill-1362/"
+    },
+    {
+      "title": "Texas Legislature Approves SB 1362 to Preempt 'Red Flag' Laws",
+      "snippet": "What Senate Bill 1362 Does. At its core, SB 1362 prohibits Texas judges and local officials from issuing or enforcing ERPOs that restrict ...",
+      "url": "https://www.texaspolicyresearch.com/texas-legislature-approves-sb-1362-to-preempt-red-flag-laws-what-you-need-to-know/"
+    },
+    {
+      "title": "Rep. Hefner lays out SB 1362, which would prohibit red flag gun ...",
+      "snippet": "Rep. Hefner lays out SB 1362, which would prohibit red flag gun laws in Texas and create a criminal offense for enforcing red flag orders ...",
+      "url": "https://www.youtube.com/watch?v=vBUvhJIoD7A"
+    },
+    {
+      "title": "[PDF] 89(R) SB 1362 - Texas Legislature Online",
+      "snippet": "A BILL TO BE ENTITLED. AN ACT relating to prohibiting the recognition, service, and enforcement of extreme risk protective orders; creating a criminal offense.",
+      "url": "https://capitol.texas.gov/tlodocs/89R/billtext/pdf/SB01362I.pdf"
+    },
+    {
+      "title": "Washington Post article: Texas bans red flag laws. - Texas Gun Sense",
+      "snippet": "S.B. 1362, known as the Anti-Red Flag Act, preemptively bars the state from adopting or enforcing most kinds of extreme risk protective orders.",
+      "url": "https://txgunsense.org/texas-bans-red-flag-laws-that-allow-guns-to-be-taken-from-owners-in-crisis/"
+    },
+    {
+      "title": "Texas Bans Red-Flag Laws - ASIS International",
+      "snippet": "Under S.B. 1362, or the Anti-Red Flag Act, Texas judges are prohibited from using a red-flag order in civil cases to confiscate a person's ...",
+      "url": "https://www.asisonline.org/security-management-magazine/latest-news/today-in-security/2025/june/red-flag-law-texas/"
+    },
+    {
+      "title": "SB 1362 - 89th Legislature - Texas Policy Research",
+      "snippet": "It prevents firearm confiscation without a criminal conviction, reinforcing private property rights and due process protections. The bill aligns with the ...",
+      "url": "https://www.texaspolicyresearch.com/bills/89th-legislature-sb-1362/"
+    },
+    {
+      "title": "“Anti-Red Flag Act” that would limit when guns can be taken ... - KSAT",
+      "snippet": "Senate Bill 1362 would prevent judges and other local officials from seizing firearms in cases where criminal charges have not been filed.",
+      "url": "https://www.ksat.com/news/texas/2025/05/28/anti-red-flag-act-that-would-limit-when-guns-can-be-taken-from-people-advances-in-texas-house/"
+    },
+    {
+      "title": "TX SB1362 - Bill - BillTrack50",
+      "snippet": "This bill, known as the \"Anti-Red Flag Act,\" prohibits state and local entities in Texas from recognizing, serving, or enforcing what it defines as \"extreme ...",
+      "url": "https://www.billtrack50.com/billdetail/1836449"
+    }
+  ]
+}

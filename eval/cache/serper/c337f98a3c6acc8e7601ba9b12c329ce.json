@@ -1,0 +1,52 @@
+{
+  "query": "US law: As of January 1, 2026, which U.S. state has the highest statewide minimum wage?",
+  "fetched_at": "2026-03-26T08:45:39.728168+00:00",
+  "fetched_k": 10,
+  "results": [
+    {
+      "title": "State Minimum Wage Laws | U.S. Department of Labor",
+      "snippet": "The minimum wage is scheduled to increase to $14.00 per hour on July 1, 2026. American Samoa. American Samoa has special minimum wage rates. Arizona. Basic ...",
+      "url": "https://www.dol.gov/agencies/whd/minimum-wage/state"
+    },
+    {
+      "title": "State Minimum Wages - National Conference of State Legislatures",
+      "snippet": "Minimum Wage as of 1/1/2026. New York City. $16.00. $16.50. $17.00. Nassau ... State wage is higher than the Federal wage. The Georgia state minimum wage is ...",
+      "url": "https://www.ncsl.org/labor-and-employment/state-minimum-wages"
+    },
+    {
+      "title": "Minimum Wage Rate in the US by State (2026) | Paycom",
+      "snippet": "While Washington is technically the state with the highest hourly minimum wage at $17.13, Washington, D.C., has the highest rate across the ...",
+      "url": "https://www.paycom.com/resources/blog/minimum-wage-rate-by-state/"
+    },
+    {
+      "title": "2026 Minimum Wage Rates by State - Labor Law Center",
+      "snippet": "Federal Minimum Wage Information ; Arizona, $8.05, $10.00 ; Arkansas, $8.00, $8.50 ; California, $10.00, $10.50 ; Colorado, $8.31, $9.30 ...",
+      "url": "https://www.laborlawcenter.com/state-minimum-wage-rates?srsltid=AfmBOoooYuCtei9CTl2yDXy8fl9Serw1ALOtp7scy2lPB8WIgUAbEbqn"
+    },
+    {
+      "title": "2026 U.S. Minimum Wage By State Compliance Guide - VirgilHR",
+      "snippet": "West Coast states and municipalities maintain the highest minimum wage rates nationwide. Several localities—especially in CA, WA, and CO—have minimum wages ...",
+      "url": "https://virgilhr.com/2026-us-minimum-wage-by-state-compliance-guide/"
+    },
+    {
+      "title": "Minimum Wage in 2026 Mapped: Which States Have Higher Rates ...",
+      "snippet": "Four of those states—California, Illinois, Maryland, and Massachusetts—already require employers to pay at least $15 an hour statewide, putting ...",
+      "url": "https://www.investopedia.com/minimum-wage-in-2026-mapped-which-states-are-raising-rates-and-who-stays-at-usd7-25-11901620"
+    },
+    {
+      "title": "As of January 2026, 34 states, territories and districts have minimum ...",
+      "snippet": "As of January 2026, 34 states, territories and districts have minimum wages above the federal minimum wage of $7.25 per hour. Learn more:...",
+      "url": "https://www.facebook.com/NCSLorg/posts/as-of-january-2026-34-states-territories-and-districts-have-minimum-wages-above-/1294719052687154/"
+    },
+    {
+      "title": "Minimum wage just went up in 19 U.S. states - CNBC",
+      "snippet": "Minimum wage workers in Hawaii will see the largest jump in their hourly pay. The state's minimum wage rose by $2 per hour, from $14 to $16.",
+      "url": "https://www.cnbc.com/2026/01/01/minimum-wage-just-went-up-in-these-us-states-starting-january-2026.html"
+    },
+    {
+      "title": "These States Raised Their Minimum Wage in 2026",
+      "snippet": "The state minumum wage went up in 19 states on January 1. Hourly pay in Hawaii, New York, Rhode Island, California, Connecticut, Washington and ...",
+      "url": "https://www.governing.com/map-of-the-day/these-states-raised-their-minimum-wage-in-2026"
+    }
+  ]
+}

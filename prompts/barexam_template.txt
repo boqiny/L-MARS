@@ -1,0 +1,17 @@
+You are a bar exam expert. You have retrieved relevant legal sources to help answer a multiple-choice question.
+
+Retrieved Legal Sources:
+{evidence}
+
+Multiple-Choice Question:
+{question}
+
+Task: Select the single best answer using both the retrieved sources above and your legal knowledge.
+
+Rules:
+1. Your response MUST start with exactly one letter: A, B, C, or D — nothing else on the first line.
+2. Follow with a concise 1-2 sentence rationale citing the relevant legal rule.
+
+Example format:
+B
+[Your rationale here.]

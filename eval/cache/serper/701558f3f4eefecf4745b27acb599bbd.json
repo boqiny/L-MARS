@@ -1,0 +1,57 @@
+{
+  "query": "US law: In recent years, several large corporations incorporated and headquartered in State A have suddenly been acquired by out-of-state corporations that have moved all of their operations out of State A. O",
+  "fetched_at": "2026-03-26T04:52:58.824628+00:00",
+  "fetched_k": 10,
+  "results": [
+    {
+      "title": "Commerce Clause | Wex | US Law | LII / Legal Information Institute",
+      "snippet": "The Commerce Clause refers to Article 1, Section 8, Clause 3 of the US Constitution, which gives Congress the power to regulate commerce with foreign nations.",
+      "url": "https://www.law.cornell.edu/wex/commerce_clause"
+    },
+    {
+      "title": "Interpretation: The Commerce Clause | Constitution Center",
+      "snippet": "The Commerce Clause, which grants Congress the power to regulate Commerce with foreign Nations, and among the several States, and with the Indian Tribes.",
+      "url": "https://constitutioncenter.org/the-constitution/articles/article-i/clauses/752"
+    },
+    {
+      "title": "[PDF] State Takeover Legislation and the Commerce Clause - openYLS",
+      "snippet": "T hat a corporation should be \"incorporated\" in, or \"chartered\" by, a particular state is a peculiar and vexing circumstance. It is by no means immutable.",
+      "url": "https://openyls.law.yale.edu/bitstreams/9f85f26c-14c3-4e76-8aa4-0922c8ce95ae/download"
+    },
+    {
+      "title": "Supreme Court Limits Challenges to State Laws and Regulatory ...",
+      "snippet": "This “dormant Commerce Clause” doctrine creates a sphere of exclusive federal authority where state regulations are unenforceable.",
+      "url": "https://www.winston.com/en/insights-news/supreme-court-limits-challenges-to-state-laws-and-regulatory-authority-under-dormant-commerce-clause-doctrine"
+    },
+    {
+      "title": "Commerce Clause – Business Law - Nicolet College",
+      "snippet": "The main source of authority for the federal regulation of interstate and international commerce is the commerce clause.",
+      "url": "https://nicoletcollege.pressbooks.pub/businesslaw/chapter/commerce-clause/"
+    },
+    {
+      "title": "Relations Between Federal and State Governments - Quizlet",
+      "snippet": "A: No, because one of the purposes of the statute is to prevent out-of-state entities from acquiring corporations incorporated and headquartered in the state. B ...",
+      "url": "https://quizlet.com/517023284/relations-between-federal-and-state-governments-flash-cards/"
+    },
+    {
+      "title": "4.1 Commerce Clause - Business Law I Essentials | OpenStax",
+      "snippet": "The Tenth Amendment to the Constitution gives the states powers over areas of law not held exclusively by the federal government through the ...",
+      "url": "https://openstax.org/books/business-law-i-essentials/pages/4-1-commerce-clause"
+    },
+    {
+      "title": "Procedural Due Process Civil :: Fourteenth Amendment - Justia Law",
+      "snippet": "“Where a rule of conduct applies to more than a few people it is impracticable that everyone should have a direct voice in its adoption. The Constitution does ...",
+      "url": "https://law.justia.com/constitution/us/amendment-14/05-procedural-due-process-civil.html"
+    },
+    {
+      "title": "The Corporate Capture of the United States",
+      "snippet": "This is the essence of “capture” – CEOs are enriched, while all other corporate constituencies, including government, are left with liabilities.",
+      "url": "https://corpgov.law.harvard.edu/2012/01/05/the-corporate-capture-of-the-united-states/"
+    },
+    {
+      "title": "U.S. business laws: Can a company be registered in one US state ...",
+      "snippet": "Yes not a problem to be registered in one state but operate from a different state as long as you are also registered in the other state. You ...",
+      "url": "https://www.quora.com/U-S-business-laws-Can-a-company-be-registered-in-one-US-state-e-g-FL-but-have-all-their-assets-and-conduct-their-business-entirely-from-another-state-e-g-CA"
+    }
+  ]
+}

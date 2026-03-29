@@ -1,0 +1,52 @@
+{
+  "query": "US law: What is the federal minimum wage in the United States as of 2026?",
+  "fetched_at": "2026-03-26T08:45:39.778920+00:00",
+  "fetched_k": 10,
+  "results": [
+    {
+      "title": "State Minimum Wage Laws | U.S. Department of Labor",
+      "snippet": "Employers subject to the Fair Labor Standards Act must pay the current Federal minimum wage of $7.25 per hour. Alaska. Basic Minimum Rate (per hour): $13.00.",
+      "url": "https://www.dol.gov/agencies/whd/minimum-wage/state"
+    },
+    {
+      "title": "Minimum Wage Rate in the US by State (2026) | Paycom",
+      "snippet": "The current federal minimum wage is $7.25 per hour. States with their own hourly wage requirements may exceed this rate, but employers ...",
+      "url": "https://www.paycom.com/resources/blog/minimum-wage-rate-by-state/"
+    },
+    {
+      "title": "State Minimum Wages - National Conference of State Legislatures",
+      "snippet": "State Minimum Wages Summary. Currently, 34 states, territories and districts have minimum wages above the federal minimum wage of $7.25 per hour.",
+      "url": "https://www.ncsl.org/labor-and-employment/state-minimum-wages"
+    },
+    {
+      "title": "U.S. State Minimum Wages for 2026: What Employers Need To Know",
+      "snippet": "The federal minimum wage is $7.25/hour, but the majority of states and many cities and counties set higher rates — and those rates can change on ...",
+      "url": "https://www.paychex.com/articles/payroll-taxes/us-minimum-wage"
+    },
+    {
+      "title": "Minimum Wage Rate by State in the U.S. [2026] - Paycor",
+      "snippet": "Federal minimum wage is still $7.25, but 23 states are increasing their minimum wage in 2026. Washington state and Washington, D.C. have the highest minimum ...",
+      "url": "https://www.paycor.com/resource-center/articles/minimum-wage-by-state/"
+    },
+    {
+      "title": "H.R.122 - 119th Congress (2025-2026): Original LAW Act",
+      "snippet": "The bill increases the minimum hourly wage to $10.59 beginning on January 1, 2026, and increases the minimum hourly wage by $4 annually from January 1, 2027, ...",
+      "url": "https://www.congress.gov/bill/119th-congress/house-bill/122"
+    },
+    {
+      "title": "Minimum Wage Increases Coming in 2026 as Nationwide ...",
+      "snippet": "In 2026, a total of 20 states will keep their minimum wages at the federal level of $7.25 per hour, and 8 other states with wage floors ...",
+      "url": "https://www.nelp.org/minimum-wage-increases-coming-in-2026-as-nationwide-affordability-crisis-deepens/"
+    },
+    {
+      "title": "2026 Minimum Wage Rates by State - Labor Law Center",
+      "snippet": "Federal Minimum Wage Information ; Maryland, $8.75, $9.25, $10.10, $10.10 ; Massachusetts, $10.00, $11.00, $11.00, $12.00 ...",
+      "url": "https://www.laborlawcenter.com/state-minimum-wage-rates?srsltid=AfmBOopve-3SCWgNBsQydp0vQ4x7AxoG9hTvwxi8dfcY1mL-fFMIY4jc"
+    },
+    {
+      "title": "2026 Minimum Wage Changes | Schneider Wallace Cottrell Kim LLP",
+      "snippet": "While the federal minimum wage remains at $7.25 per hour, the majority of workers in the United States fall under additional minimum wages ...",
+      "url": "https://www.schneiderwallace.com/media/2026-minimum-wage-changes/"
+    }
+  ]
+}

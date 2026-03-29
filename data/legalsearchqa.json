@@ -1,0 +1,902 @@
+[
+    {
+      "id": "lsqa_001",
+      "question": "What is the current status of Executive Order 14110, the Biden administration's executive order on AI safety signed in October 2023?",
+      "choices": [
+        "It remains in full effect and is being actively enforced",
+        "It was revoked by President Trump on January 20, 2025",
+        "It was partially amended but key provisions remain",
+        "It expired automatically after 12 months"
+      ],
+      "gold": 1,
+      "source_url": "https://www.federalregister.gov/documents/2023/11/01/2023-24283/safe-secure-and-trustworthy-development-and-use-of-artificial-intelligence",
+      "source_name": "Federal Register",
+      "date_verified": "2026-03-26",
+      "domain": "technology_regulation",
+      "category": "status",
+      "difficulty": "medium",
+      "rationale": "EO 14110 was revoked by EO 14148 on January 20, 2025, within hours of President Trump assuming office. The Federal Register notes 'Revoked by: EO 14148, January 20, 2025.'"
+    },
+    {
+      "id": "lsqa_002",
+      "question": "For tax year 2025, what is the standard deduction for a single filer under age 65, after the One Big Beautiful Bill Act amendments?",
+      "choices": [
+        "$14,600",
+        "$15,000",
+        "$15,350",
+        "$15,750"
+      ],
+      "gold": 3,
+      "source_url": "https://www.irs.gov/newsroom/irs-releases-tax-inflation-adjustments-for-tax-year-2026-including-amendments-from-the-one-big-beautiful-bill",
+      "source_name": "IRS.gov",
+      "date_verified": "2026-03-26",
+      "domain": "tax_law",
+      "category": "threshold",
+      "difficulty": "hard",
+      "rationale": "The original 2025 standard deduction was $15,000 (per Rev. Proc. 2024-40). The One Big Beautiful Bill Act (OBBBA) raised it to $15,750 for single filers for 2025."
+    },
+    {
+      "id": "lsqa_003",
+      "question": "Following FinCEN's interim final rule published on March 26, 2025, which entities are now required to file beneficial ownership information (BOI) reports under the Corporate Transparency Act?",
+      "choices": [
+        "All domestic and foreign companies operating in the United States",
+        "Only foreign entities registered to do business in the United States",
+        "Only domestic companies with annual revenue exceeding $5 million",
+        "Only publicly traded companies and their subsidiaries"
+      ],
+      "gold": 1,
+      "source_url": "https://www.fincen.gov/boi",
+      "source_name": "FinCEN.gov",
+      "date_verified": "2026-03-26",
+      "domain": "corporate_law",
+      "category": "scope",
+      "difficulty": "hard",
+      "rationale": "FinCEN's interim final rule published March 26, 2025 revised the definition of 'reporting company' to mean ONLY foreign entities registered to do business in the US. All domestic companies and US persons are now exempt."
+    },
+    {
+      "id": "lsqa_004",
+      "question": "Under the One Big Beautiful Bill Act, what is the maximum amount of the new senior tax deduction available per qualifying individual age 65 or older for tax year 2025?",
+      "choices": [
+        "$2,000",
+        "$4,000",
+        "$6,000",
+        "$8,000"
+      ],
+      "gold": 2,
+      "source_url": "https://www.irs.gov/newsroom/irs-releases-tax-inflation-adjustments-for-tax-year-2026-including-amendments-from-the-one-big-beautiful-bill",
+      "source_name": "IRS.gov",
+      "date_verified": "2026-03-26",
+      "domain": "tax_law",
+      "category": "threshold",
+      "difficulty": "hard",
+      "rationale": "The OBBBA introduced a new deduction of up to $6,000 per qualifying individual age 65+ ($12,000 for joint filers if both qualify), available for tax years 2025-2028. This is separate from the existing additional standard deduction for seniors."
+    },
+    {
+      "id": "lsqa_005",
+      "question": "What is the filing deadline for foreign companies registered to do business in the US before March 26, 2025, to submit beneficial ownership information reports to FinCEN?",
+      "choices": [
+        "January 1, 2025",
+        "March 21, 2025",
+        "April 25, 2025",
+        "January 1, 2026"
+      ],
+      "gold": 2,
+      "source_url": "https://www.fincen.gov/boi",
+      "source_name": "FinCEN.gov",
+      "date_verified": "2026-03-26",
+      "domain": "corporate_law",
+      "category": "threshold",
+      "difficulty": "hard",
+      "rationale": "Per FinCEN's interim final rule published March 26, 2025, foreign reporting companies registered before March 26, 2025 must file by April 25, 2025."
+    },
+    {
+      "id": "lsqa_006",
+      "question": "For tax year 2026, what is the standard deduction for married couples filing jointly?",
+      "choices": [
+        "$30,000",
+        "$31,500",
+        "$32,200",
+        "$33,000"
+      ],
+      "gold": 2,
+      "source_url": "https://www.irs.gov/newsroom/irs-releases-tax-inflation-adjustments-for-tax-year-2026-including-amendments-from-the-one-big-beautiful-bill",
+      "source_name": "IRS.gov",
+      "date_verified": "2026-03-26",
+      "domain": "tax_law",
+      "category": "threshold",
+      "difficulty": "medium",
+      "rationale": "Per IRS Revenue Procedure 2025-32, the standard deduction for married filing jointly rises to $32,200 for tax year 2026."
+    },
+    {
+      "id": "lsqa_007",
+      "question": "Under the One Big Beautiful Bill Act, at what modified adjusted gross income (MAGI) threshold does the new senior deduction begin to phase out for single filers?",
+      "choices": [
+        "$50,000",
+        "$75,000",
+        "$100,000",
+        "$150,000"
+      ],
+      "gold": 1,
+      "source_url": "https://www.hrblock.com/tax-center/irs/tax-law-and-policy/one-big-beautiful-bill-senior-tax-deduction/",
+      "source_name": "H&R Block / IRS guidance",
+      "date_verified": "2026-03-26",
+      "domain": "tax_law",
+      "category": "threshold",
+      "difficulty": "hard",
+      "rationale": "The new senior deduction of up to $6,000 begins to phase out at MAGI of $75,000 for single filers and $150,000 for married filing jointly. It is reduced by 6% for every dollar above those income limits."
+    },
+    {
+      "id": "lsqa_008",
+      "question": "Which federal agency was designated by Executive Order 14110 to develop guidelines and standards for AI safety, through its National Institute of Standards and Technology (NIST) division?",
+      "choices": [
+        "Department of Defense",
+        "Department of Homeland Security",
+        "Department of Commerce",
+        "Federal Trade Commission"
+      ],
+      "gold": 2,
+      "source_url": "https://www.congress.gov/crs-product/R47843",
+      "source_name": "Congressional Research Service",
+      "date_verified": "2026-03-26",
+      "domain": "technology_regulation",
+      "category": "authority",
+      "difficulty": "medium",
+      "rationale": "Section 4.1 of EO 14110 directed the Secretary of Commerce, acting through the Director of NIST, to develop guidelines, standards, and best practices for AI safety and security."
+    },
+    {
+      "id": "lsqa_009",
+      "question": "What is the maximum annual contribution limit for 401(k), 403(b), and 457 plans for workers under age 50 in tax year 2025?",
+      "choices": [
+        "$22,500",
+        "$23,000",
+        "$23,500",
+        "$24,000"
+      ],
+      "gold": 2,
+      "source_url": "https://www.irs.gov/newsroom/401k-limit-increases-to-23500-for-2025-ira-limit-remains-7000",
+      "source_name": "IRS.gov",
+      "date_verified": "2026-03-26",
+      "domain": "tax_law",
+      "category": "threshold",
+      "difficulty": "medium",
+      "rationale": "Per IRS announcement, the 401(k) contribution limit for 2025 is $23,500, up from $23,000 in 2024."
+    },
+    {
+      "id": "lsqa_010",
+      "question": "Under the SECURE 2.0 Act provision that took effect in 2025, what is the enhanced catch-up contribution limit for 401(k) plan participants between ages 60 and 63?",
+      "choices": [
+        "$7,500",
+        "$10,000",
+        "$11,250",
+        "$15,000"
+      ],
+      "gold": 2,
+      "source_url": "https://www.irs.gov/newsroom/401k-limit-increases-to-23500-for-2025-ira-limit-remains-7000",
+      "source_name": "IRS.gov",
+      "date_verified": "2026-03-26",
+      "domain": "tax_law",
+      "category": "threshold",
+      "difficulty": "hard",
+      "rationale": "Beginning in 2025, as part of the SECURE 2.0 Act, plan participants ages 60-63 can make catch-up contributions up to $11,250, higher than the standard $7,500 catch-up limit for those 50 and older."
+    },
+    {
+      "id": "lsqa_011",
+      "question": "Effective February 27, 2026, how is the H-1B cap selection process modified under the Department of Homeland Security's final rule?",
+      "choices": [
+        "It eliminates the lottery in favor of a first-come, first-served system based on filing date",
+        "It weights selection based on wage levels, entering Wage Level IV candidates four times into the lottery pool",
+        "It grants automatic selection to any candidate with a Master's degree from a U.S. institution",
+        "It requires a minimum salary of $150,000 for all H-1B beneficiaries regardless of region"
+      ],
+      "gold": 1,
+      "source_url": "https://www.uscis.gov/newsroom/news-releases/dhs-changes-process-for-awarding-h-1b-work-visas-to-better-protect-american-workers",
+      "source_name": "USCIS.gov",
+      "date_verified": "2026-03-26",
+      "domain": "immigration_law",
+      "category": "requirement_check",
+      "difficulty": "hard",
+      "rationale": "The final rule published December 29, 2025 replaced the random lottery with a weighted system: Level IV (4 entries), Level III (3), Level II (2), and Level I (1). Effective February 27, 2026 for the FY 2027 cap season."
+    },
+    {
+      "id": "lsqa_012",
+      "question": "Under Presidential Proclamation 10973 (issued September 19, 2025), what is the supplemental fee required for employers filing new H-1B petitions for beneficiaries residing outside the United States?",
+      "choices": [
+        "$4,000",
+        "$10,000",
+        "$50,000",
+        "$100,000"
+      ],
+      "gold": 3,
+      "source_url": "https://www.uscis.gov/newsroom/alerts/h-1b-faq",
+      "source_name": "USCIS.gov",
+      "date_verified": "2026-03-26",
+      "domain": "immigration_law",
+      "category": "threshold",
+      "difficulty": "hard",
+      "rationale": "Presidential Proclamation 10973, signed September 19, 2025, requires a $100,000 payment to accompany new H-1B petitions submitted after September 21, 2025, primarily for beneficiaries outside the US without a valid H-1B visa."
+    },
+    {
+      "id": "lsqa_013",
+      "question": "As of early 2026, what is the official status of the Federal Trade Commission's (FTC) nationwide ban on non-compete clauses (16 CFR Part 910)?",
+      "choices": [
+        "It is in full effect and actively enforced against all employers",
+        "It was officially removed from the Code of Federal Regulations following court decisions striking it down",
+        "It applies only to 'senior executives' earning over $151,164",
+        "It has been stayed by the Supreme Court pending a final ruling in late 2026"
+      ],
+      "gold": 1,
+      "source_url": "https://www.acainternational.org/news/ftc-officially-removes-noncompete-rule-from-federal-regulations/",
+      "source_name": "ACA International",
+      "date_verified": "2026-03-26",
+      "domain": "labor_law",
+      "category": "status",
+      "difficulty": "hard",
+      "rationale": "On February 12, 2026, the FTC officially removed the Non-Compete Clause Rule from the Code of Federal Regulations in a 3-1 vote, following the Ryan LLC v. FTC ruling and the FTC's September 2025 withdrawal of its appeals. The FTC now pursues case-by-case enforcement instead."
+    },
+    {
+      "id": "lsqa_014",
+      "question": "For the FY 2027 H-1B cap season, what is the per-beneficiary electronic registration fee that employers must pay to USCIS?",
+      "choices": [
+        "$10",
+        "$110",
+        "$215",
+        "$500"
+      ],
+      "gold": 2,
+      "source_url": "https://www.uscis.gov/working-in-the-united-states/temporary-workers/h-1b-specialty-occupations/h-1b-electronic-registration-process",
+      "source_name": "USCIS.gov",
+      "date_verified": "2026-03-26",
+      "domain": "immigration_law",
+      "category": "threshold",
+      "difficulty": "medium",
+      "rationale": "The H-1B registration fee increased from $10 to $215 per beneficiary for FY 2027, a twenty-fold increase authorized by the 2024 USCIS Stabilization Act. Models trained on older data will likely say $10."
+    },
+    {
+      "id": "lsqa_015",
+      "question": "When does the initial electronic registration period for the FY 2027 H-1B cap open and close?",
+      "choices": [
+        "February 1 through February 15, 2026",
+        "March 4 through March 19, 2026",
+        "April 1 through April 14, 2026",
+        "January 15 through January 31, 2026"
+      ],
+      "gold": 1,
+      "source_url": "https://www.uscis.gov/newsroom/alerts/fy-2027-h-1b-cap-initial-registration-period-opens-on-march-4",
+      "source_name": "USCIS.gov",
+      "date_verified": "2026-03-26",
+      "domain": "immigration_law",
+      "category": "threshold",
+      "difficulty": "hard",
+      "rationale": "USCIS announced the FY 2027 H-1B cap registration period opens at noon Eastern on March 4, 2026 and runs through noon Eastern on March 19, 2026."
+    },
+    {
+      "id": "lsqa_016",
+      "question": "In the 2025 Supreme Court ruling 'Bondi v. VanDerStok,' what was the Court's decision regarding the ATF's regulation of 'ghost guns'?",
+      "choices": [
+        "The Court struck down the regulation, ruling that unfinished frames and receivers are not 'firearms'",
+        "The Court upheld the regulation, ruling that the Gun Control Act covers at least some weapons parts kits",
+        "The Court ruled that only Congress, not the ATF, has the authority to define 'firearms'",
+        "The Court dismissed the case on standing grounds without reaching the merits"
+      ],
+      "gold": 1,
+      "source_url": "https://www.supremecourt.gov/opinions/24pdf/23-852_o7jp.pdf",
+      "source_name": "Supreme Court of the United States",
+      "date_verified": "2026-03-26",
+      "domain": "criminal_law",
+      "category": "authority",
+      "difficulty": "medium",
+      "rationale": "On March 26, 2025, in a 7-2 decision written by Justice Gorsuch, the Supreme Court held that the Gun Control Act covers at least some weapons parts kits regulated by the ATF rule, upholding the regulation. Justices Thomas and Alito dissented."
+    },
+    {
+      "id": "lsqa_017",
+      "question": "What is the new USCIS filing fee for Form I-907 Premium Processing of H-1B petitions (Form I-129) postmarked on or after March 1, 2026?",
+      "choices": [
+        "$2,500",
+        "$2,805",
+        "$2,965",
+        "$3,150"
+      ],
+      "gold": 2,
+      "source_url": "https://www.uscis.gov/newsroom/alerts/uscis-to-increase-premium-processing-fees",
+      "source_name": "USCIS.gov",
+      "date_verified": "2026-03-26",
+      "domain": "immigration_law",
+      "category": "threshold",
+      "difficulty": "medium",
+      "rationale": "Per the Federal Register final rule effective March 1, 2026, the premium processing fee for Form I-129 H-1B petitions increases from $2,805 to $2,965, reflecting inflation adjustment under the USCIS Stabilization Act."
+    },
+    {
+      "id": "lsqa_018",
+      "question": "Under Presidential Proclamation 10973, is the $100,000 H-1B supplemental fee required for a cap-subject petition filed after September 21, 2025, that requests a change of status for an F-1 student currently in the United States?",
+      "choices": [
+        "Yes, the fee applies to all new H-1B petitions regardless of the beneficiary's location",
+        "No, the fee is not required if USCIS grants the change of status and the beneficiary remains in the US",
+        "The fee is reduced to $50,000 for change-of-status petitions",
+        "The fee only applies if the F-1 student has been in the US for less than one year"
+      ],
+      "gold": 1,
+      "source_url": "https://www.uscis.gov/newsroom/alerts/h-1b-faq",
+      "source_name": "USCIS.gov",
+      "date_verified": "2026-03-26",
+      "domain": "immigration_law",
+      "category": "scope",
+      "difficulty": "hard",
+      "rationale": "Per USCIS guidance published October 20, 2025, the $100,000 fee does NOT apply to petitions requesting change of status or extension of stay for individuals currently in the US, provided USCIS grants the change of status. F-1 students changing to H-1B while remaining in the US are exempt."
+    },
+    {
+      "id": "lsqa_019",
+      "question": "In the 2025 case 'Ames v. Ohio Department of Youth Services,' the Supreme Court addressed Title VII discrimination claims by 'majority group' members. What was the unanimous ruling?",
+      "choices": [
+        "Majority group members must show 'background circumstances' to prove discrimination occurred",
+        "Majority group members do not need to satisfy any additional requirements beyond those applied to minority groups",
+        "Reverse discrimination claims are only valid if the employer has a formal quota system",
+        "The Court ruled that Title VII applies only to historically marginalized groups"
+      ],
+      "gold": 1,
+      "source_url": "https://www.supremecourt.gov/opinions/24pdf/23-1039_c0n2.pdf",
+      "source_name": "Supreme Court of the United States",
+      "date_verified": "2026-03-26",
+      "domain": "labor_law",
+      "category": "authority",
+      "difficulty": "medium",
+      "rationale": "On June 5, 2025, the Supreme Court unanimously held in Ames v. Ohio Dept. of Youth Services that Title VII does not distinguish between majority-group and minority-group plaintiffs. The 'background circumstances' requirement previously imposed by the Sixth Circuit and other circuits was rejected. Justice Jackson wrote the opinion."
+    },
+    {
+      "id": "lsqa_020",
+      "question": "As of January 1, 2026, what is the statewide minimum wage in California for all employers?",
+      "choices": [
+        "$15.50 per hour",
+        "$16.00 per hour",
+        "$16.90 per hour",
+        "$18.00 per hour"
+      ],
+      "gold": 2,
+      "source_url": "https://www.dir.ca.gov/dlse/minimum_wage.htm",
+      "source_name": "California Department of Industrial Relations",
+      "date_verified": "2026-03-26",
+      "domain": "labor_law",
+      "category": "threshold",
+      "difficulty": "medium",
+      "rationale": "California's statewide minimum wage increased from $16.50 to $16.90 per hour effective January 1, 2026, per Labor Code section 1182.12(c) cost-of-living adjustment."
+    },
+    {
+        "id": "lsqa_021",
+        "question": "On December 18, 2025, President Trump signed an executive order directing the Attorney General to take what action regarding marijuana under the Controlled Substances Act?",
+        "choices": [
+        "Immediately legalize recreational marijuana nationwide",
+        "Expedite and complete the process of rescheduling marijuana from Schedule I to Schedule III",
+        "Remove marijuana from all controlled substance schedules entirely",
+        "Ban all state-level medical marijuana programs"
+        ],
+        "gold": 1,
+        "source_url": "https://www.congress.gov/crs-product/LSB11105",
+        "source_name": "Congressional Research Service",
+        "date_verified": "2026-03-26",
+        "domain": "drug_policy",
+        "category": "requirement_check",
+        "difficulty": "medium",
+        "rationale": "EO 14370, titled 'Increasing Medical Marijuana and Cannabidiol Research,' directs the AG to complete the existing rulemaking process to move marijuana from Schedule I to Schedule III. It does NOT itself change marijuana's classification. The rulemaking process began with a May 2024 DEA proposed rule but stalled in 2025."
+    },
+    {
+        "id": "lsqa_022",
+        "question": "As of March 2026, what is the current federal classification of marijuana under the Controlled Substances Act?",
+        "choices": [
+        "Schedule I (most restrictive)",
+        "Schedule II",
+        "Schedule III",
+        "It has been removed from all schedules"
+        ],
+        "gold": 0,
+        "source_url": "https://www.congress.gov/crs-product/LSB11105",
+        "source_name": "Congressional Research Service",
+        "date_verified": "2026-03-26",
+        "domain": "drug_policy",
+        "category": "status",
+        "difficulty": "hard",
+        "rationale": "Despite the December 2025 executive order directing rescheduling, as of March 2026 marijuana REMAINS Schedule I. The EO directed the AG to complete rescheduling but the DEA rulemaking process has not been finalized. The administrative proceedings remain pending. Models may incorrectly state it has already been rescheduled."
+    },
+    {
+        "id": "lsqa_023",
+        "question": "In November 2025, Congress enacted legislation changing the legal definition of hemp. What is the key change to how hemp is defined?",
+        "choices": [
+        "Hemp is now defined based on total THC concentration rather than just delta-9 THC concentration",
+        "Hemp is now classified as a Schedule III controlled substance",
+        "All hemp products are banned from interstate commerce",
+        "Hemp is redefined to include only industrial fiber products, excluding edibles"
+        ],
+        "gold": 0,
+        "source_url": "https://www.congress.gov/crs-product/LSB11105",
+        "source_name": "Congressional Research Service",
+        "date_verified": "2026-03-26",
+        "domain": "drug_policy",
+        "category": "scope",
+        "difficulty": "hard",
+        "rationale": "The FY 2026 Agriculture Appropriations Act (enacted November 2025) changed the hemp definition from delta-9 THC only to total THC concentration. The new definition is scheduled to take effect in November 2026. This closes a loophole that allowed psychoactive hemp-derived products."
+    },
+    {
+        "id": "lsqa_024",
+        "question": "Under Texas SB 1596, effective September 2025, what change was made to Texas state firearms law?",
+        "choices": [
+        "All firearms sales now require universal background checks",
+        "Short-barreled rifles and shotguns were removed from the list of prohibited weapons",
+        "Open carry of all firearms was banned in urban areas",
+        "The minimum age to purchase a handgun was lowered to 18"
+        ],
+        "gold": 1,
+        "source_url": "https://versustexas.com/gun-rights-in-texas/",
+        "source_name": "Versus Texas / Texas Penal Code Chapter 46",
+        "date_verified": "2026-03-26",
+        "domain": "state_law",
+        "category": "status",
+        "difficulty": "hard",
+        "rationale": "Texas SB 1596 (effective September 2025) completely removed short-barreled rifles (SBR) and shotguns (SBS) from the prohibited weapons list under Texas Penal Code §46.05 and eliminated all state criminal penalties for possessing, manufacturing, transporting, repairing, or selling these firearms. Federal NFA registration requirements still apply."
+    },
+    {
+        "id": "lsqa_025",
+        "question": "What is the federal minimum wage in the United States as of 2026?",
+        "choices": [
+        "$7.25 per hour",
+        "$10.00 per hour",
+        "$12.00 per hour",
+        "$15.00 per hour"
+        ],
+        "gold": 0,
+        "source_url": "https://www.dol.gov/agencies/whd/minimum-wage/state",
+        "source_name": "U.S. Department of Labor",
+        "date_verified": "2026-03-26",
+        "domain": "labor_law",
+        "category": "threshold",
+        "difficulty": "easy",
+        "rationale": "The federal minimum wage remains $7.25 per hour, unchanged since July 24, 2009. This is the longest stretch without an increase since the FLSA was enacted in 1938. While 30+ states have higher state minimums, the federal rate has not changed. Models may incorrectly report a higher figure if they confuse state rates with the federal rate."
+    },
+    {
+        "id": "lsqa_026",
+        "question": "As of January 1, 2026, which U.S. state has the highest statewide minimum wage?",
+        "choices": [
+        "California ($16.90/hour)",
+        "Washington ($17.13/hour)",
+        "New York ($17.00/hour)",
+        "Massachusetts ($15.00/hour)"
+        ],
+        "gold": 1,
+        "source_url": "https://www.paycor.com/resource-center/articles/minimum-wage-by-state/",
+        "source_name": "Paycor / Department of Labor data",
+        "date_verified": "2026-03-26",
+        "domain": "labor_law",
+        "category": "threshold",
+        "difficulty": "medium",
+        "rationale": "Washington state has the highest statewide minimum wage at $17.13/hour as of January 1, 2026. Note: Washington D.C. has $17.95 but is not a state. New York's $17.00 applies only to NYC, Long Island, and Westchester; the rest of the state is $16.00."
+    },
+    {
+        "id": "lsqa_027",
+        "question": "Under the H-1B weighted selection rule effective February 27, 2026, how many times is a registration for a beneficiary offered a Wage Level I (entry-level) salary entered into the selection pool?",
+        "choices": [
+        "Zero times (Level I candidates are excluded)",
+        "One time",
+        "Two times",
+        "Four times"
+        ],
+        "gold": 1,
+        "source_url": "https://www.federalregister.gov/documents/2025/12/29/2025-23853/weighted-selection-process-for-registrants-and-petitioners-seeking-to-file-cap-subject-h-1b",
+        "source_name": "Federal Register",
+        "date_verified": "2026-03-26",
+        "domain": "immigration_law",
+        "category": "requirement_check",
+        "difficulty": "medium",
+        "rationale": "Under the weighted selection, Level I = 1 entry, Level II = 2 entries, Level III = 3 entries, Level IV = 4 entries. Level I candidates are NOT excluded — they still have a chance, just lower odds. This is a common misunderstanding."
+    },
+    {
+        "id": "lsqa_028",
+        "question": "In September 2025, the FTC voted to dismiss its appeals in Ryan LLC v. FTC regarding the nationwide noncompete ban. What was the vote margin?",
+        "choices": [
+        "5-0 (unanimous)",
+        "4-1",
+        "3-2",
+        "3-1"
+        ],
+        "gold": 3,
+        "source_url": "https://www.kmm.com/ftc-abandons-federal-non-compete-ban/",
+        "source_name": "Kauff McGuire & Margolis LLP / FTC press release",
+        "date_verified": "2026-03-26",
+        "domain": "labor_law",
+        "category": "authority",
+        "difficulty": "hard",
+        "rationale": "The FTC voted 3-1 along party lines on September 5, 2025 to dismiss its appeals in Ryan LLC v. FTC and Properties of the Villages v. FTC. FTC Chair Andrew Ferguson stated the rule's 'illegality was patently obvious.'"
+    },
+    {
+        "id": "lsqa_029",
+        "question": "How many states still use the federal minimum wage of $7.25/hour as their effective minimum wage in 2026, with no state-level increase?",
+        "choices": [
+        "5 states",
+        "10 states",
+        "20 states",
+        "35 states"
+        ],
+        "gold": 2,
+        "source_url": "https://nowsta.com/blog/federal-minimum-wage-2026/",
+        "source_name": "Nowsta / Department of Labor data",
+        "date_verified": "2026-03-26",
+        "domain": "labor_law",
+        "category": "threshold",
+        "difficulty": "medium",
+        "rationale": "As of 2026, 20 states still effectively use the federal $7.25 minimum: Alabama, Georgia, Idaho, Indiana, Iowa, Kansas, Kentucky, Louisiana, Mississippi, New Hampshire, North Carolina, North Dakota, Oklahoma, Pennsylvania, South Carolina, Tennessee, Texas, Utah, Wisconsin, and Wyoming."
+    },
+    {
+        "id": "lsqa_030",
+        "question": "What is the annual cap on H-1B visas issued each fiscal year, including the advanced degree exemption?",
+        "choices": [
+        "65,000 total",
+        "85,000 total (65,000 regular + 20,000 advanced degree)",
+        "120,000 total",
+        "200,000 total"
+        ],
+        "gold": 1,
+        "source_url": "https://www.uscis.gov/working-in-the-united-states/temporary-workers/h-1b-specialty-occupations/h-1b-cap-season",
+        "source_name": "USCIS.gov",
+        "date_verified": "2026-03-26",
+        "domain": "immigration_law",
+        "category": "threshold",
+        "difficulty": "easy",
+        "rationale": "The annual H-1B cap is 65,000 visas with an additional 20,000 reserved for holders of U.S. master's degrees or higher, totaling 85,000. This has not changed and provides context for the weighted selection system."
+    },
+    {
+        "id": "lsqa_031",
+        "question": "What is the current enforcement status of the SEC's 2024 climate-related disclosure rules (adopted March 2024) as of late 2025?",
+        "choices": [
+        "The rules are fully in effect and being actively enforced",
+        "The rules have been voluntarily stayed by the SEC since April 2024 and the SEC voted to end its defense in March 2025",
+        "The Supreme Court struck down the rules as unconstitutional",
+        "The rules were replaced by a new, more stringent set of climate regulations"
+        ],
+        "gold": 1,
+        "source_url": "https://www.sec.gov/newsroom/press-releases/2025-58",
+        "source_name": "SEC.gov",
+        "date_verified": "2026-03-26",
+        "domain": "securities_regulation",
+        "category": "status",
+        "difficulty": "hard",
+        "rationale": "The SEC adopted climate disclosure rules in March 2024 but voluntarily stayed them in April 2024 pending Eighth Circuit litigation. In March 2025, the Trump-era SEC voted to end its defense of the rules. In September 2025, the Eighth Circuit held the case in abeyance until the SEC either rescinds or defends the rules. The rules technically remain on the books but are not enforced."
+    },
+    {
+        "id": "lsqa_032",
+        "question": "In which federal circuit court is the consolidated litigation challenging the SEC's climate disclosure rules (Iowa v. SEC) being heard?",
+        "choices": [
+        "Fifth Circuit",
+        "Eighth Circuit",
+        "D.C. Circuit",
+        "Second Circuit"
+        ],
+        "gold": 1,
+        "source_url": "https://eelp.law.harvard.edu/eighth-curcuit-says-sec-must-defend-or-revise-climate-risk-disclosure-rule/",
+        "source_name": "Harvard Environmental & Energy Law Program",
+        "date_verified": "2026-03-26",
+        "domain": "securities_regulation",
+        "category": "authority",
+        "difficulty": "hard",
+        "rationale": "Nine circuit court challenges were consolidated in the Eighth Circuit via lottery by the Judicial Panel on Multidistrict Litigation in March 2024. The lead case is Iowa v. SEC, No. 24-1522."
+    },
+    {
+        "id": "lsqa_033",
+        "question": "The Washington My Health My Data Act (MHMDA) is the first state privacy law focused specifically on what type of data not covered by HIPAA?",
+        "choices": [
+        "Financial transaction data",
+        "Consumer health data collected by non-HIPAA-covered entities",
+        "Employee biometric data in the workplace",
+        "Children's educational records"
+        ],
+        "gold": 1,
+        "source_url": "https://www.atg.wa.gov/protecting-washingtonians-personal-health-data-and-privacy",
+        "source_name": "Washington State Attorney General",
+        "date_verified": "2026-03-26",
+        "domain": "privacy_law",
+        "category": "scope",
+        "difficulty": "medium",
+        "rationale": "The Washington MHMDA (signed April 2023, effective March 31, 2024) is the first state privacy law specifically targeting consumer health data outside HIPAA's scope. It covers entities like fitness apps, wellness trackers, and period-tracking apps that collect health-related data but aren't HIPAA-covered entities."
+    },
+    {
+        "id": "lsqa_034",
+        "question": "Under the Washington My Health My Data Act, what is the minimum distance within which geofencing is prohibited around healthcare facilities?",
+        "choices": [
+        "500 feet",
+        "1,000 feet",
+        "2,000 feet",
+        "5,000 feet"
+        ],
+        "gold": 2,
+        "source_url": "https://app.leg.wa.gov/RCW/default.aspx?cite=19.373&full=true",
+        "source_name": "Washington State Legislature (RCW 19.373)",
+        "date_verified": "2026-03-26",
+        "domain": "privacy_law",
+        "category": "threshold",
+        "difficulty": "hard",
+        "rationale": "The MHMDA prohibits geofencing within 2,000 feet (609.6 meters) of any entity that provides in-person healthcare services, where such geofencing is used to identify or track consumers seeking healthcare services or to send health-related advertisements."
+    },
+    {
+        "id": "lsqa_035",
+        "question": "In the 2025 Texas legislative session, what did SB 1362 (the 'Anti-Red Flag Act') accomplish?",
+        "choices": [
+        "It established a state-level extreme risk protection order (ERPO) system",
+        "It blocked courts and local officials from using or enforcing ERPO-style orders under state law",
+        "It required universal background checks for all firearms purchases",
+        "It raised the minimum age for handgun purchases to 25"
+        ],
+        "gold": 1,
+        "source_url": "https://www.bhwlawfirm.com/texas-gun-control-laws-ownership-carry-use/",
+        "source_name": "HLAW Law Firm / Texas Legislature",
+        "date_verified": "2026-03-26",
+        "domain": "state_law",
+        "category": "requirement_check",
+        "difficulty": "hard",
+        "rationale": "Texas SB 1362 (passed June 2025) is the 'Anti-Red Flag Act' that blocks courts and local officials from using or enforcing extreme risk protection order (ERPO)-style orders under Texas state law and resists enforcement of most federal or out-of-state ERPOs. Texas remains outside the group of states with red flag laws."
+    },
+    {
+        "id": "lsqa_036",
+        "question": "After President Trump revoked Biden's Executive Order 14026 in March 2025, what is the federal contractor minimum wage under the surviving Obama-era Executive Order 13658, effective May 11, 2026?",
+        "choices": [
+        "$7.25 per hour",
+        "$13.65 per hour",
+        "$15.00 per hour",
+        "$17.75 per hour"
+        ],
+        "gold": 1,
+        "source_url": "https://www.dol.gov/agencies/whd/government-contracts/minimum-wage",
+        "source_name": "U.S. Department of Labor",
+        "date_verified": "2026-03-26",
+        "domain": "labor_law",
+        "category": "threshold",
+        "difficulty": "hard",
+        "rationale": "Trump's EO 14236 (March 2025) revoked Biden's EO 14026, which had set the contractor minimum at $15+/hour (reaching $17.75 by 2025). The surviving Obama-era EO 13658 only applies to contracts entered into between Jan 1, 2015 and Jan 29, 2022, with an inflation-adjusted rate of $13.65/hour effective May 11, 2026. For newer contracts, there is currently no specific federal contractor minimum wage beyond the general $7.25."
+    },
+    {
+        "id": "lsqa_037",
+        "question": "When did the new definition of hemp enacted by Congress in November 2025 — based on total THC concentration rather than just delta-9 THC — take effect?",
+        "choices": [
+        "Immediately upon enactment in November 2025",
+        "January 1, 2026",
+        "It is scheduled to take effect in November 2026",
+        "It has been indefinitely delayed by the DEA"
+        ],
+        "gold": 2,
+        "source_url": "https://www.congress.gov/crs-product/LSB11105",
+        "source_name": "Congressional Research Service",
+        "date_verified": "2026-03-26",
+        "domain": "drug_policy",
+        "category": "threshold",
+        "difficulty": "hard",
+        "rationale": "The FY 2026 Agriculture Appropriations Act (enacted November 2025) changed the hemp definition but the new definition is scheduled to take effect in November 2026, giving the industry one year to adapt. This delayed effective date is a critical detail for compliance."
+    },
+    {
+        "id": "lsqa_038",
+        "question": "Under the H-1B weighted selection rule, if a single beneficiary has registrations from multiple employers at different wage levels, how does USCIS determine the wage level for selection purposes?",
+        "choices": [
+        "USCIS uses the highest wage level among all registrations",
+        "USCIS uses the lowest wage level among all registrations",
+        "USCIS averages the wage levels across all registrations",
+        "Each registration is entered independently at its own wage level"
+        ],
+        "gold": 1,
+        "source_url": "https://www.federalregister.gov/documents/2025/12/29/2025-23853/weighted-selection-process-for-registrants-and-petitioners-seeking-to-file-cap-subject-h-1b",
+        "source_name": "Federal Register",
+        "date_verified": "2026-03-26",
+        "domain": "immigration_law",
+        "category": "requirement_check",
+        "difficulty": "hard",
+        "rationale": "If a beneficiary has multiple registrations at different wage levels, USCIS assigns the beneficiary to the LOWEST wage level among them. This anti-gaming provision prevents employers from layering registrations at artificially high wage levels to boost selection odds."
+    },
+    {
+        "id": "lsqa_039",
+        "question": "How many states had minimum wages at or above $15.00 per hour by the end of 2026?",
+        "choices": [
+        "5 states",
+        "10 states",
+        "18 states plus Washington D.C.",
+        "All 50 states"
+        ],
+        "gold": 2,
+        "source_url": "https://www.paycor.com/resource-center/articles/minimum-wage-by-state/",
+        "source_name": "Paycor / Department of Labor data",
+        "date_verified": "2026-03-26",
+        "domain": "labor_law",
+        "category": "threshold",
+        "difficulty": "medium",
+        "rationale": "By the end of 2026, 18 states plus Washington D.C. have minimum wages at or above $15.00 per hour, including California, New York, Florida (reaching $15 in September 2026), Washington, Connecticut, and others. Twenty states remain at the federal $7.25."
+    },
+    {
+        "id": "lsqa_040",
+        "question": "Which U.S. city has the highest local minimum wage as of 2026?",
+        "choices": [
+        "San Francisco, CA ($18.67/hour)",
+        "Seattle, WA ($20.76/hour)",
+        "Tukwila, WA ($21.65/hour)",
+        "New York City, NY ($17.00/hour)"
+        ],
+        "gold": 2,
+        "source_url": "https://www.paycor.com/resource-center/articles/minimum-wage-by-state/",
+        "source_name": "Paycor / Department of Labor data",
+        "date_verified": "2026-03-26",
+        "domain": "labor_law",
+        "category": "threshold",
+        "difficulty": "hard",
+        "rationale": "Tukwila, Washington has the highest local minimum wage in the country at $21.65 per hour as of 2026. This small city near Seattle-Tacoma International Airport passed its own ordinance, exceeding even Seattle's rate. Most models will guess San Francisco or Seattle."
+    },
+    {
+        "id": "lsqa_041",
+        "question": "Under the California AI Transparency Act (SB 942), as amended by AB 853 with an operative date of August 2, 2026, what is the mandatory requirement for covered providers of GenAI systems regarding image, video, and audio output?",
+        "choices": [
+        "They must include a visible text disclaimer on every output",
+        "They must incorporate a 'latent' digital watermark in AI-generated image, video, and audio content",
+        "They must report the GPU cluster size used for training to the State Architect",
+        "They must block all outputs that reference specific California state officials"
+        ],
+        "gold": 1,
+        "source_url": "https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=202320240SB942",
+        "source_name": "California Legislative Information",
+        "date_verified": "2026-03-26",
+        "domain": "technology_regulation",
+        "category": "requirement_check",
+        "difficulty": "hard",
+        "rationale": "SB 942 requires covered providers (GenAI systems with 1M+ monthly users) to include latent (invisible) watermarks in AI-generated image, video, and audio content. AB 853 (signed October 13, 2025) amended the operative date from January 1, 2026 to August 2, 2026 to align with the EU AI Act. The law does not apply to text-only outputs."
+    },
+    {
+        "id": "lsqa_042",
+        "question": "What is the current enforcement status of California SB 1047 (the Safe and Secure Innovation for Frontier Models Act) as of March 2026?",
+        "choices": [
+        "It is in full effect and being enforced by the Frontier Model Division",
+        "It was vetoed by Governor Newsom in late 2024 and failed a subsequent override attempt",
+        "It was struck down by the California Supreme Court in January 2026 on First Amendment grounds",
+        "It was replaced by the federal AI Safety Act of 2025"
+        ],
+        "gold": 1,
+        "source_url": "https://gov.ca.gov/2024/09/29/governor-newsom-vetoes-sb-1047/",
+        "source_name": "Office of Governor Gavin Newsom",
+        "date_verified": "2026-03-26",
+        "domain": "technology_regulation",
+        "category": "status",
+        "difficulty": "medium",
+        "rationale": "Governor Newsom vetoed SB 1047 on September 29, 2024. While there were attempts to reintroduce similar 'frontier model' legislation in 2025, SB 1047 itself is not law."
+    },
+    {
+        "id": "lsqa_043",
+        "question": "The Maryland Age-Appropriate Design Code Act (HB 603), effective October 1, 2024, with DPIA requirements enforceable by April 1, 2026, prohibits which specific data practice for users under 18?",
+        "choices": [
+        "Using 'dark patterns' to lead children to provide personal information or circumvent privacy protections",
+        "Allowing children to use social media after 9:00 PM without parental codes",
+        "Collecting any data from children without a $50 registration fee per user",
+        "Restricting children from seeing political advertisements"
+        ],
+        "gold": 0,
+        "source_url": "https://www.wsgr.com/en/insights/maryland-age-appropriate-design-code-effective-october-1-2024.html",
+        "source_name": "Wilson Sonsini / Maryland Legislature HB 603",
+        "date_verified": "2026-03-26",
+        "domain": "privacy_law",
+        "category": "scope",
+        "difficulty": "hard",
+        "rationale": "The Maryland AADC (signed May 9, 2024, effective October 1, 2024) explicitly prohibits the use of 'dark patterns' that induce children to provide unnecessary data or circumvent privacy protections. DPIAs must be completed by April 1, 2026. Note: the law is being challenged by NetChoice (motion to dismiss denied November 2025) but remains in effect."
+    },
+    {
+        "id": "lsqa_044",
+        "question": "The SEC's transition to T+1 securities settlement took effect on what date, shortening the standard settlement cycle from T+2?",
+        "choices": [
+        "January 1, 2024",
+        "May 28, 2024",
+        "January 1, 2025",
+        "October 1, 2025"
+        ],
+        "gold": 1,
+        "source_url": "https://www.sec.gov/rules/2024/02/34-99306",
+        "source_name": "SEC.gov",
+        "date_verified": "2026-03-26",
+        "domain": "securities_regulation",
+        "category": "threshold",
+        "difficulty": "medium",
+        "rationale": "The SEC's final rule shortening the standard settlement cycle from T+2 to T+1 took effect on May 28, 2024. This was the most significant change to US settlement infrastructure since the move from T+3 to T+2 in 2017. Models trained before mid-2024 may not know the exact implementation date."
+    },
+    {
+        "id": "lsqa_045",
+        "question": "How did the 2024 amendments to the Delaware General Corporation Law (DGCL), specifically Section 122(18), resolve the 'Moelis' controversy regarding shareholder agreements?",
+        "choices": [
+        "By banning all shareholder agreements that limit board authority",
+        "By explicitly authorizing corporations to enter into shareholder agreements that grant certain veto or approval rights to specific investors",
+        "By requiring all such agreements to be approved by a 90% supermajority of shareholders",
+        "By moving all 'Moelis' disputes to federal court instead of Delaware Chancery"
+        ],
+        "gold": 1,
+        "source_url": "https://corpgov.law.harvard.edu/2024/07/22/delaware-dgcl-amendments-addressing-moelis-and-activist-settlements/",
+        "source_name": "Harvard Law School Forum on Corporate Governance",
+        "date_verified": "2026-03-26",
+        "domain": "corporate_law",
+        "category": "authority",
+        "difficulty": "hard",
+        "rationale": "The DGCL 'Moelis fix' was a major 2024 legislative response to the West Palm Beach Firefighters' Pension Fund v. Moelis & Co. decision, clarifying that boards can contractually limit their own authority via shareholder agreements under new Section 122(18)."
+    },
+    {
+        "id": "lsqa_046",
+        "question": "Which executive order did President Trump sign in March 2025 that revoked Biden's federal contractor minimum wage mandate (EO 14026)?",
+        "choices": [
+        "Executive Order 14148",
+        "Executive Order 14236",
+        "Executive Order 14370",
+        "Executive Order 14110"
+        ],
+        "gold": 1,
+        "source_url": "https://www.hrlawwatch.com/2026/02/13/dol-sets-new-minimum-wage-rates-for-certain-federal-contracts/",
+        "source_name": "HR Law Watch / DOL",
+        "date_verified": "2026-03-26",
+        "domain": "labor_law",
+        "category": "authority",
+        "difficulty": "hard",
+        "rationale": "Executive Order 14236 (March 14, 2025) rescinded Biden's EO 14026, which had established a $15/hour federal contractor minimum wage. EO 14148 (Jan 20, 2025) revoked the AI safety EO 14110. EO 14370 (Dec 18, 2025) directed marijuana rescheduling. EO 14110 was the Biden AI safety EO itself."
+    },
+    {
+        "id": "lsqa_047",
+        "question": "In the November 2024 election, Florida Amendment 3 proposed legalizing recreational marijuana for adults 21 and older. What was the outcome?",
+        "choices": [
+        "It passed with 71% of the vote, matching the 2016 medical marijuana amendment",
+        "It received approximately 56% support but failed because Florida requires 60% for constitutional amendments",
+        "It passed narrowly with 61% and retail sales began in mid-2025",
+        "It was removed from the ballot by the Florida Supreme Court before the election"
+        ],
+        "gold": 1,
+        "source_url": "https://ballotpedia.org/Florida_Amendment_3,_Marijuana_Legalization_Initiative_(2024)",
+        "source_name": "Ballotpedia",
+        "date_verified": "2026-03-26",
+        "domain": "drug_policy",
+        "category": "status",
+        "difficulty": "hard",
+        "rationale": "Florida Amendment 3 received approximately 56% voter support but FAILED because Florida requires a 60% supermajority for constitutional amendments. Governor DeSantis actively campaigned against it. Recreational marijuana remains illegal in Florida. Models may incorrectly assume it passed given majority support."
+    },
+    {
+        "id": "lsqa_048",
+        "question": "The New Jersey Data Privacy Act (NJDPA), effective January 15, 2025, includes a Global Privacy Control (GPC) requirement. By what date must covered controllers begin honoring browser-based universal opt-out signals?",
+        "choices": [
+        "Immediately upon the law's effective date (January 15, 2025)",
+        "July 15, 2025",
+        "January 15, 2026",
+        "The law does not require GPC recognition until 2028"
+        ],
+        "gold": 1,
+        "source_url": "https://www.njconsumeraffairs.gov/ocp/Pages/NJ-Data-Privacy-Law-FAQ.aspx",
+        "source_name": "NJ Division of Consumer Affairs",
+        "date_verified": "2026-03-26",
+        "domain": "privacy_law",
+        "category": "threshold",
+        "difficulty": "hard",
+        "rationale": "Per the NJ Division of Consumer Affairs FAQ: 'by July 15, 2025, controllers must honor opt out signals sent by consumers through universal opt-out mechanisms.' This is 6 months after the January 15, 2025 effective date. GPC is explicitly named as an example mechanism."
+    },
+    {
+        "id": "lsqa_049",
+        "question": "Under the EU AI Act (Regulation 2024/1689), which has extraterritorial impact on US companies, what is the binding compliance deadline for Annex III 'High-Risk' AI systems?",
+        "choices": [
+        "February 2, 2025",
+        "August 2, 2026",
+        "August 2, 2027",
+        "December 31, 2030"
+        ],
+        "gold": 1,
+        "source_url": "https://artificialintelligenceact.eu/implementation-timeline/",
+        "source_name": "EU AI Act Compliance Tracker",
+        "date_verified": "2026-03-26",
+        "domain": "technology_regulation",
+        "category": "threshold",
+        "difficulty": "hard",
+        "rationale": "The EU AI Act entered into force August 2024. The binding compliance deadline for Annex III high-risk AI systems is August 2, 2026. The Digital Omnibus proposal (November 2025) could delay this to December 2027, but as of March 2026 it has NOT been adopted — August 2, 2026 remains the legally binding date."
+    },
+    {
+        "id": "lsqa_050",
+        "question": "The SEC's amended Rule 10b5-1, fully applicable to all reporting companies as of 2025, requires what 'cooling-off' period for directors and officers before they can trade under a newly adopted plan?",
+        "choices": [
+        "30 days",
+        "90 days or 2 days after the filing of the 10-Q/10-K for the quarter (whichever is later, up to 120 days)",
+        "Exactly six months",
+        "There is no cooling-off period if the plan is approved by the CEO"
+        ],
+        "gold": 1,
+        "source_url": "https://www.sec.gov/news/press-release/2022-222",
+        "source_name": "SEC.gov",
+        "date_verified": "2026-03-26",
+        "domain": "securities_regulation",
+        "category": "requirement_check",
+        "difficulty": "medium",
+        "rationale": "The SEC adopted amendments in December 2022 establishing a specific variable cooling-off period to prevent 'just-in-time' plan adoptions before the release of material non-public information. The cooling-off is 90 days or until 2 business days after filing the relevant 10-Q/10-K, whichever is later, capped at 120 days."
+    }
+  ]
