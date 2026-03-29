@@ -2,6 +2,8 @@
 
 📄 **Paper:** [L-MARS: Legal Multi-Agent Workflow with Orchestrated Reasoning and Agentic Search](https://arxiv.org/abs/2509.00761)
 
+🤗 The complete dataset with sources and rationales is available at [boqiny/LegalSearchQA](https://huggingface.co/datasets/boqiny/LegalSearchQA).
+
 L-MARS (Legal Multi-Agent Framework for Orchestrated Reasoning and Agentic Search) combines multiple search strategies, agent-based reasoning, and evaluation systems for legal QA.
 ![workflow](https://github.com/user-attachments/assets/c047aa4d-7d29-4a2d-bf32-e34a00d7058d)
 
@@ -22,16 +24,7 @@ Evaluation uses:
 pip install -r requirements.txt
 ```
 
-## Dataset
-
-Place your LEXam file at `data/lexam/lexam.jsonl` (or pass `--dataset-path`).
-Expected schema per row:
-
-```json
-{"id":"...","input":"...","gold":"..."}
-```
-
-## Run L-MARS (cached)
+## Run L-MARS
 
 ```bash
 python run/single_turn_pipeline.py \
