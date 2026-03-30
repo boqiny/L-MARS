@@ -1,4 +1,4 @@
-# L-MARS (Minimal Single-Turn)
+# L-MARS
 
 📄 **Paper:** [L-MARS: Legal Multi-Agent Workflow with Orchestrated Reasoning and Agentic Search](https://arxiv.org/abs/2509.00761)
 
