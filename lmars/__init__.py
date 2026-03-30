@@ -1,36 +1,18 @@
-"""
-L-MARS - Legal Multi-Agent Workflow for Orchestrated Reasoning and Agentic Search
+"""L-MARS minimal single-turn legal QA pipeline."""
 
-A modern legal research system with two modes:
-- Simple Mode: Single-turn retrieval and response (fast)
-- Multi-Turn Mode: Iterative refinement with agents (thorough)
-"""
+from .workflow import LMarsWorkflow, WorkflowConfig, create_workflow
+from .agents import FinalAnswer, QueryAgent, QueryGeneration, SearchAgent, SearchResult, SummaryAgent
 
-from .workflow import LMarsWorkflow, create_workflow, WorkflowConfig
-from .agents import (
-    QueryAgent, SearchAgent, JudgeAgent, SummaryAgent,
-    FollowUpQuestion, QueryGeneration, SearchResult, 
-    JudgmentResult, FinalAnswer
-)
-
-__version__ = "2.0.0"
+__version__ = "3.0.0"
 
 __all__ = [
-    # Main workflow system
     "LMarsWorkflow",
-    "create_workflow",
     "WorkflowConfig",
-    
-    # Agents
+    "create_workflow",
     "QueryAgent",
-    "SearchAgent",
-    "JudgeAgent", 
-    "SummaryAgent",
-    
-    # Data models
-    "FollowUpQuestion",
     "QueryGeneration",
+    "SearchAgent",
     "SearchResult",
-    "JudgmentResult", 
-    "FinalAnswer"
+    "SummaryAgent",
+    "FinalAnswer",
 ]

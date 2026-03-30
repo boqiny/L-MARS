@@ -43,6 +43,7 @@ detailed_results = search_serper_with_content("patent infringement cases")
 """
 import os
 import json
+import time
 import requests
 from requests.exceptions import Timeout
 from bs4 import BeautifulSoup
@@ -210,33 +211,49 @@ def search_serper_with_content(query: str, max_results: int = 3) -> str:
 # CORE API INTERFACE
 # =============================================================================
 
-def serper_web_search(query: str, api_key: str, timeout: int = 20) -> Dict:
+def serper_web_search(
+    query: str,
+    api_key: str,
+    timeout: int = 20,
+    max_retries: int = 3,
+) -> Dict:
     """
     CORE API CALL: Makes the actual HTTP request to Google Serper API.
-    This is where we interface with the external service.
+    Retries up to ``max_retries`` times with exponential backoff (1s, 2s, 4s…).
     """
     url = "https://google.serper.dev/search"
-    
-    payload = json.dumps({
-        "q": query
-    })
-    
-    headers = {
-        'X-API-KEY': api_key,
-        'Content-Type': 'application/json'
+    payload = json.dumps({"q": query})
+    req_headers = {
+        "X-API-KEY": api_key,
+        "Content-Type": "application/json",
     }
 
-    try:
-        response = requests.post(url, data=payload, headers=headers, timeout=timeout)
-        response.raise_for_status()
-        search_results = response.json()
-        return search_results
-    except Timeout:
-        print(f"Serper API request timed out ({timeout} seconds) for query: {query}")
-        return {}
-    except requests.exceptions.RequestException as e:
-        print(f"Error occurred during Serper API request: {e}")
-        return {}
+    for attempt in range(max_retries):
+        try:
+            response = requests.post(
+                url, data=payload, headers=req_headers, timeout=timeout
+            )
+            response.raise_for_status()
+            return response.json()
+        except Timeout:
+            wait = 2 ** attempt
+            print(
+                f"Serper API timed out (attempt {attempt + 1}/{max_retries}, "
+                f"query={query!r}). Retrying in {wait}s…"
+            )
+        except requests.exceptions.RequestException as e:
+            wait = 2 ** attempt
+            if attempt < max_retries - 1:
+                print(
+                    f"Serper API error (attempt {attempt + 1}/{max_retries}): {e}. "
+                    f"Retrying in {wait}s…"
+                )
+            else:
+                print(f"Error occurred during Serper API request: {e}")
+                return {}
+        time.sleep(wait)
+
+    return {}
 
 
 def extract_relevant_info(search_results: Dict) -> List[Dict]:
@@ -255,7 +272,7 @@ def extract_relevant_info(search_results: Dict) -> List[Dict]:
                 from urllib.parse import urlparse
                 parsed_url = urlparse(result.get('link', ''))
                 site_name = parsed_url.netloc.replace('www.', '')
-            except:
+            except Exception:
                 pass
             
             info = {
